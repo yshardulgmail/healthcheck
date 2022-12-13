@@ -160,9 +160,9 @@ const nodes = {server0: [
   const COLUMNS = [
     { label: 'App Name', renderCell: (item) => <a target="_blank" href={item.appUrl}>{item.appName}</a> },
     { label: 'App URL', renderCell: (item) => <p>{item.appUrl}</p> },
-    { label: '4:30pm', renderCell: (item) => item["4:30pm"].toLowerCase() == "up" ? <img id="running_img" src={green}></img> : <img id="stopped_img" src={red}></img>},
-    { label: '5:00pm', renderCell: (item) => item["5:00pm"].toLowerCase() == "up" ? <img id="running_img" src={green}></img> : <img id="stopped_img" src={red}></img>},
-    { label: '5:30pm', renderCell: (item) => item["5:30pm"].toLowerCase() == "up" ? <img id="running_img" src={green}></img> : <img id="stopped_img" src={red}></img>},
+    { label: '4:30pm', renderCell: (item) => item["4:30pm"].toLowerCase() === "up" ? <img id="running_img" src={green}></img> : <img id="stopped_img" src={red}></img>},
+    { label: '5:00pm', renderCell: (item) => item["5:00pm"].toLowerCase() === "up" ? <img id="running_img" src={green}></img> : <img id="stopped_img" src={red}></img>},
+    { label: '5:30pm', renderCell: (item) => item["5:30pm"].toLowerCase() === "up" ? <img id="running_img" src={green}></img> : <img id="stopped_img" src={red}></img>},
   ];
 
 const Component = (props) => {
