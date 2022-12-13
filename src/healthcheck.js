@@ -8,7 +8,7 @@ import BatchTable from './BatchTable';
 
 
 const App = () => {
-  const [tabIndex, setTabIndex] = useState(0);
+  const [tabIndex, setTabIndex] = useState(1);
 
   useEffect(() => {
     // clearTimer(getDeadTime());

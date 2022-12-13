@@ -11,7 +11,8 @@ import green from "./resources/green.png"
 // import { nodes } from './data';
 
 const key = 'Search';
-const nodes = {server0: [
+const nodes = {
+    server0: [
     {
       id: '0',
       appName: "Google",

@@ -21,9 +21,9 @@ const Example = () => {
         setStatus(data["name"].toLowerCase());
     };
 
-    // data.map((entry, index) => {
-    //     console.log(Object.keys(entry)[0]);
-    // });
+    data.map((entry, index) => {
+        console.log(Object.keys(entry)[0]);
+    });
 
     return (
         <div>
