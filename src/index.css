@@ -21,6 +21,12 @@ code {
   width: 100% !important;
 }
 
+.react-tabs__tab,
+.react-tabs__tab--selected {
+  background: black !important;
+  color: white !important;
+}
+
 #donuts_wrapper {
   width: 100%;
   overflow: hidden;

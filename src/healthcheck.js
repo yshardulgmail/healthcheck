@@ -3,6 +3,7 @@ import 'react-tabs/style/react-tabs.css';
 import { useState, useEffect } from 'react';
 import Example from './Donut1';
 import BatchTable from './BatchTable';
+// import "./index.css"
 
 
 
