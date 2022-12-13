@@ -5,7 +5,9 @@ import { useTheme } from '@table-library/react-table-library/theme';
 import { DEFAULT_OPTIONS, getTheme } from '@table-library/react-table-library/chakra-ui';
 import { Box, Stack, Input, InputGroup, InputLeftElement } from '@chakra-ui/react';
 import { FaSearch } from 'react-icons/fa';
-import styles from './index.css'
+import styles from './index.css';
+import red from "./resources/red.png"
+import green from "./resources/green.png"
 // import { nodes } from './data';
 
 const key = 'Search';
@@ -14,25 +16,28 @@ const nodes = {server0: [
       id: '0',
       appName: "Google",
       appUrl: "https://www.google.com",
-      upTime: "30",
-      downTime: "10",
-      status: "running"
+      "4:30pm": "UP",
+      "5:00pm": "UP",
+      "5:30pm": "Down",
+      status: "stopped",
     },
     {
         id: '1',
         appName: "Facebook",
         appUrl: "https://www.facebook.com",
-        upTime: "70",
-        downTime: "20",
-        status: "stopped"
+        "4:30pm": "UP",
+        "5:00pm": "Down",
+        "5:30pm": "UP",
+        status: "running",
     },
     {
         id: '2',
         appName: "Microsoft",
         appUrl: "https://www.microsoft.com",
-        upTime: "90",
-        downTime: "30",
-        status: "stopped"
+        "4:30pm": "Down",
+        "5:00pm": "UP",
+        "5:30pm": "Down",
+        status: "stopped",
     },
   ],
   server1: [
@@ -40,25 +45,28 @@ const nodes = {server0: [
       id: '3',
       appName: "Go",
       appUrl: "https://www.google.com",
-      upTime: "30",
-      downTime: "10",
-      status: "running"
+      "4:30pm": "UP",
+      "5:00pm": "UP",
+      "5:30pm": "Down",
+      status: "stopped",
     },
     {
         id: '4',
         appName: "Fa",
         appUrl: "https://www.facebook.com",
-        upTime: "70",
-        downTime: "20",
-        status: "running"
+        "4:30pm": "UP",
+      "5:00pm": "UP",
+      "5:30pm": "UP",
+      status: "running",
     },
     {
         id: '5',
         appName: "Mi",
         appUrl: "https://www.microsoft.com",
-        upTime: "90",
-        downTime: "30",
-        status: "stopped"
+        "4:30pm": "UP",
+      "5:00pm": "UP",
+      "5:30pm": "Down",
+      status: "stopped",
     },
   ],
   server2: [
@@ -66,25 +74,28 @@ const nodes = {server0: [
       id: '6',
       appName: "Gogi",
       appUrl: "https://www.google.com",
-      upTime: "30",
-      downTime: "10",
-      status: "running"
+      "4:30pm": "Down",
+      "5:00pm": "UP",
+      "5:30pm": "UP",
+      status: "running",
     },
     {
         id: '7',
         appName: "Faci",
         appUrl: "https://www.facebook.com",
-        upTime: "70",
-        downTime: "20",
-        status: "running"
+        "4:30pm": "down",
+        "5:00pm": "down",
+        "5:30pm": "Down",
+        status: "stopped",
     },
     {
         id: '8',
         appName: "Micri",
         appUrl: "https://www.microsoft.com",
-        upTime: "90",
-        downTime: "30",
-        status: "stopped"
+        "4:30pm": "UP",
+        "5:00pm": "UP",
+        "5:30pm": "Down",
+        status: "stopped",
     },
   ],
   server3: [
@@ -92,25 +103,28 @@ const nodes = {server0: [
       id: '9',
       appName: "Googli",
       appUrl: "https://www.google.com",
-      upTime: "30",
-      downTime: "10",
-      status: "running"
+      "4:30pm": "UP",
+      "5:00pm": "UP",
+      "5:30pm": "UP",
+      status: "running",
     },
     {
         id: '10',
         appName: "Facebooki",
         appUrl: "https://www.facebook.com",
-        upTime: "70",
-        downTime: "20",
-        status: "running"
+        "4:30pm": "Down",
+      "5:00pm": "UP",
+      "5:30pm": "UP",
+      status: "running",
     },
     {
         id: '11',
         appName: "Microsofti",
         appUrl: "https://www.microsoft.com",
-        upTime: "90",
-        downTime: "30",
-        status: "stopped"
+        "4:30pm": "Down",
+      "5:00pm": "Down",
+      "5:30pm": "UP",
+      status: "running",
     },
   ],
   server4: [
@@ -118,32 +132,37 @@ const nodes = {server0: [
       id: '12',
       appName: "Gooooog",
       appUrl: "https://www.google.com",
-      upTime: "30",
-      downTime: "10",
-      status: "running"
+      "4:30pm": "UP",
+      "5:00pm": "UP",
+      "5:30pm": "Down",
+      status: "running",
     },
     {
         id: '13',
         appName: "Faaaaaace",
         appUrl: "https://www.facebook.com",
-        upTime: "70",
-        downTime: "20",
-        status: "running"
+        "4:30pm": "UP",
+        "5:00pm": "UP",
+        "5:30pm": "Down",
+        status: "running",
     },
     {
         id: '14',
         appName: "Miiiiiiic",
         appUrl: "https://www.microsoft.com",
-        upTime: "90",
-        downTime: "30",
-        status: "stopped"
+        "4:30pm": "UP",
+        "5:00pm": "UP",
+        "5:30pm": "Down",
+        status: "running",
     },
   ]};
   
   const COLUMNS = [
-    { label: 'Application Name', renderCell: (item) => <a href={item.appUrl}>{item.appName}</a> },
-    { label: 'Up Time', renderCell: (item) => item.upTime },
-    { label: 'Down Time', renderCell: (item) => item.downTime },
+    { label: 'App Name', renderCell: (item) => <a target="_blank" href={item.appUrl}>{item.appName}</a> },
+    { label: 'App URL', renderCell: (item) => <p>{item.appUrl}</p> },
+    { label: '4:30pm', renderCell: (item) => item["4:30pm"].toLowerCase() == "up" ? <img id="running_img" src={green}></img> : <img id="stopped_img" src={red}></img>},
+    { label: '5:00pm', renderCell: (item) => item["5:00pm"].toLowerCase() == "up" ? <img id="running_img" src={green}></img> : <img id="stopped_img" src={red}></img>},
+    { label: '5:30pm', renderCell: (item) => item["5:30pm"].toLowerCase() == "up" ? <img id="running_img" src={green}></img> : <img id="stopped_img" src={red}></img>},
   ];
 
 const Component = (props) => {
@@ -189,7 +208,7 @@ const theme = useTheme(cust_theme);
   }
   else {
     data = {
-        nodes: Object.values(nodes).flat().filter((item) => item.appName.toLowerCase().startsWith(search.toLowerCase()))
+        nodes: data.nodes["server0"]
     };
     // Object.values(nodes).map(item => data.nodes.(...item))
     

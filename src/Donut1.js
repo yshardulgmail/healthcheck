@@ -31,14 +31,14 @@ const Example = () => {
                 {
                 data.map((entry, index) => (
                     <div id="donut_wrapper" className={styles.donut_wrapper}>
-                        <PieChart width={0.197 * window.innerWidth} height={.50 * window.innerHeight} title={Object.keys(entry)[0]}>
+                        <PieChart width={0.196 * window.innerWidth} height={.30 * window.innerHeight} title={Object.keys(entry)[0]}>
                             <Pie 
                                 
                                 data={entry["server"+String(index)]}
                                 cx={120}
                                 cy={200}
-                                innerRadius={60}
-                                outerRadius={120}
+                                innerRadius={30}
+                                outerRadius={80}
                                 fill="#8884d8"
                                 // paddingAngle={5}
                                 dataKey="value"
@@ -53,8 +53,8 @@ const Example = () => {
                             
                             {/* <Legend /> */}
                         </PieChart>
-                        {/* <div id="donut_header"><label className={styles.donut_header}>{Object.keys(entry)[0].toUpperCase()}</label></div> */}
-                        <div id="donut_header"><label className={styles.donut_header}>This is long name</label></div>
+                        <div id="donut_header"><label className={styles.donut_header}>{Object.keys(entry)[0].toUpperCase()}</label></div>
+                        {/* <div id="donut_header"><label className={styles.donut_header}>This is long name</label></div> */}
                     </div>
             ))}
         </div>
