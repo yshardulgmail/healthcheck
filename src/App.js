@@ -2,7 +2,7 @@ import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import 'react-tabs/style/react-tabs.css';
 import { useState } from 'react';
 import Example from './Donut1';
-import ApplicationsTable from './Table';
+import Component from './Table';
 
 const App = () => {
   const [tabIndex, setTabIndex] = useState(0);
@@ -19,13 +19,13 @@ const App = () => {
             <Example/>
           </div>
           <div>
-            <ApplicationsTable />
+            <Component />
           </div>
         </div>
           
 
       </TabPanel>
-      <TabPanel></TabPanel>
+      <TabPanel>This is second panel</TabPanel>
     </Tabs>
   );
 };

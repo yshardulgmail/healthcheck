@@ -1,55 +1,71 @@
-import React, { PureComponent } from 'react';
-import { PieChart, Pie, Sector, Cell, ResponsiveContainer, Tooltip } from 'recharts';
+import React, { PureComponent, useState } from 'react';
+import { PieChart, Pie, Sector, Cell, ResponsiveContainer, Tooltip, Legend } from 'recharts';
+import styles from "./index.css"
+import Component from './Table';
 
 const data = [
-  { name: 'Group A', value: 400 },
-  { name: 'Group B', value: 300 },
-  { name: 'Group C', value: 300 },
-  { name: 'Group D', value: 200 },
+  { server0: [{ name: 'Running', value: 30, server: "server0" }, { name: 'Stopped', value: 10, server: "server0" }]},
+  { server1: [{ name: 'Running', value: 80, server: "server1" }, { name: 'Stopped', value: 50, server: "server1" }]},
+  { server2: [{ name: 'Running', value: 10, server: "server2" }, { name: 'Stopped', value: 50, server: "server2" }]},
+  { server3: [{ name: 'Running', value: 100, server: "server3" }, { name: 'Stopped', value: 0, server: "server3" }]},
+  { server4: [{ name: 'Running', value: 100, server: "server4" }, { name: 'Stopped', value: 0, server: "server4" }]},
 ];
-const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042'];
+const COLORS = ['green', 'red'];
 
 const Example = () => {
+    const [server, setServer] = React.useState('');
+    const [status, setStatus] = React.useState('');
     const clicking = (data, data1) => {
-        alert(data["value"])
-        
+        console.log(server)
+        setServer(data["server"]);
+        setStatus(data["name"].toLowerCase());
     };
 
+    // data.map((entry, index) => {
+    //     console.log(Object.keys(entry)[0]);
+    // });
+
     return (
-      <PieChart width={800} height={400}>
-        <Pie
-          data={data}
-          cx={120}
-          cy={200}
-          innerRadius={60}
-          outerRadius={80}
-          fill="#8884d8"
-          paddingAngle={5}
-          dataKey="value"
-          onClick={clicking}
-        >
-          {data.map((entry, index) => (
-            <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-          ))}
-        </Pie>
-        {/* <Pie
-          data={data}
-          cx={420}
-          cy={200}
-          startAngle={180}
-          endAngle={0}
-          innerRadius={60}
-          outerRadius={80}
-          fill="#8884d8"
-          paddingAngle={5}
-          dataKey="value"
-        >
-          {data.map((entry, index) => (
-            <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-          ))}
-        </Pie> */}
-        <Tooltip />
-      </PieChart>
+        <div>
+            <div id="donuts_wrapper" className={styles.donuts_wrapper}>
+                {
+                data.map((entry, index) => (
+                    <div id="donut_wrapper" className={styles.donut_wrapper}>
+                        <PieChart width={0.197 * window.innerWidth} height={.50 * window.innerHeight} title={Object.keys(entry)[0]}>
+                            <Pie 
+                                
+                                data={entry["server"+String(index)]}
+                                cx={120}
+                                cy={200}
+                                innerRadius={60}
+                                outerRadius={120}
+                                fill="#8884d8"
+                                // paddingAngle={5}
+                                dataKey="value"
+                                onClick={clicking}
+                                // label={Object.keys(entry)[0]}
+                                >
+                                {data.map((entry, index) => (
+                                    <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                                ))}
+                            </Pie>
+                            <Tooltip />
+                            
+                            {/* <Legend /> */}
+                        </PieChart>
+                        {/* <div id="donut_header"><label className={styles.donut_header}>{Object.keys(entry)[0].toUpperCase()}</label></div> */}
+                        <div id="donut_header"><label className={styles.donut_header}>This is long name</label></div>
+                    </div>
+            ))}
+        </div>
+            <br />
+            <br />
+            <br />
+            <h1>Application Details:</h1>
+            <div>
+                <Component key={server} server={server} status={status} />
+            </div>
+    </div>
     );
 }
 

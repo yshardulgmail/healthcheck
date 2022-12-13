@@ -11,3 +11,116 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.recharts-wrapper {
+  width: 20% !important;
+  height: 40% !important;
+}
+
+.recharts-legend-wrapper {
+  width: 100% !important;
+}
+
+#donuts_wrapper {
+  width: 100%;
+  overflow: hidden;
+}
+
+#donut_wrapper {
+  float: left;
+}
+
+#donut_header {
+  text-align: center;
+  font-weight: 800;
+  font-size: large;
+}
+
+.react-tabs__tab-panel--selected {
+  padding-left: 20px;
+}
+
+path .recharts-sector:hover {
+  outline: 0px !important;
+}
+.css-1u2k0bl {
+  position: inherit !important;
+  margin: 12px;
+}
+.css-0{
+  margin: auto;
+  width: 95%;
+}
+
+.modal {
+  position: fixed;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: all 0.3s ease-in-out;
+  pointer-events: none;
+}
+
+.modal.enter-done {
+  opacity: 1;
+  pointer-events: visible;
+}
+
+.modal.exit {
+  opacity: 0;
+}
+
+.modal-dialog{
+  overflow-y: initial !important;
+  width: 100%;
+  height: 100%;
+}
+
+.modal-content {
+  width: 80%;
+  height: 85%;
+  background-color: #fff;
+  transition: all 0.3s ease-in-out;
+  transform: translateY(-200px);
+  display: inline-grid;
+}
+
+.modal.enter-done .modal-content {
+  transform: translateY(0);
+}
+
+.modal.exit .modal-content {
+  transform: translateY(-200px);
+}
+
+.modal-header,
+.modal-footer {
+  padding-left: 20px;
+  align-self: center;
+  overflow: hidden;
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+
+.modal_send {
+  float: right;
+  margin-right: 40px;
+}
+
+.modal-title {
+  margin: 0;
+}
+
+.modal-body {
+  padding: 10px;
+  border-top: 1px solid #eee;
+  border-bottom: 1px solid #eee;
+  overflow-y: auto;
+}
+
