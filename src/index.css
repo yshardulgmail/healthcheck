@@ -21,9 +21,22 @@ code {
   width: 100% !important;
 }
 
+.react-tabs__tab-panel,
+.react-tabs__tab-panel--selected {
+  background: white; 
+}
+
+.react-tabs__tab-list {
+  border-bottom: 0px !important;
+  background: #009EDC;
+}
+
+.react-tabs__tab--selected {
+  border-color: #009EDC !important;
+}
 .react-tabs__tab,
 .react-tabs__tab--selected {
-  background: black !important;
+  background: #009EDC !important;
   color: white !important;
 }
 

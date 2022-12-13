@@ -56,36 +56,44 @@ const App = () => {
     }
 
   return (
-    <Tabs selectedIndex={tabIndex} onSelect={(index) => setTabIndex(index)}>
-      <TabList>
-        <Tab>Daily Healthcheck</Tab>
-        <Tab>Batch Notification</Tab>
-      </TabList>
-      <TabPanel>
-        <div>
+    <div style={{background:"black"}}>
+      <div>
+        <label style={{color: "white", fontWeight: "bold", fontSize: "xx-large"}}>Bank Technology Operations</label>
+      </div>
+      <br />
+      <hr />
+      <br />
+      <Tabs selectedIndex={tabIndex} onSelect={(index) => setTabIndex(index)}>
+        <TabList>
+          <Tab>Daily Healthcheck</Tab>
+          <Tab>Batch Notification</Tab>
+        </TabList>
+        <TabPanel>
           <div>
-            <h1 style={{color: "#009EDC"}}>BDX Healthcheck Dashboard</h1>
+            <div>
+              <label style={{color: "#009EDC", fontWeight: "bold", fontSize: "x-large"}}>BDX Healthcheck Dashboard</label>
+            </div>
+            <div style={{overflow: "hidden", width: "100%"}}>
+            <button onClick={() => window.location.reload()} className="button modal_send" style={{marginLeft: "10px"}}>
+                Refresh Now!!
+              </button>
+              <label style={{float: "right"}}>Page will refresh in 1 min</label>
+              
+
+            </div>
+            <div>
+              <Example/>
+            </div>
+            
           </div>
-          <div style={{overflow: "hidden", width: "100%"}}>
-          <button onClick={() => window.location.reload()} className="button modal_send" style={{marginLeft: "10px"}}>
-              Refresh Now!!
-            </button>
-            <label style={{float: "right"}}>Page with refresh in 1 min</label>
             
 
-          </div>
-          <div>
-            <Example/>
-          </div>
-          
-        </div>
-          
-
-      </TabPanel>
-      <TabPanel>
-        <BatchTable />
-      </TabPanel>
-    </Tabs>
+        </TabPanel>
+        <TabPanel>
+          <BatchTable />
+        </TabPanel>
+      </Tabs>
+    </div>
   );
 };
 
