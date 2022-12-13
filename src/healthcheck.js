@@ -56,21 +56,17 @@ const App = () => {
     }
 
   return (
-    <div style={{background:"black"}}>
-      <div>
-        <label style={{color: "white", fontWeight: "bold", fontSize: "xx-large"}}>Bank Technology Operations</label>
-      </div>
-      <br />
-      <hr />
-      <br />
+    <div style={{background:"#009EDC"}}>
       <Tabs selectedIndex={tabIndex} onSelect={(index) => setTabIndex(index)}>
         <TabList>
+          <Tab disabled><label style={{color: "white", fontWeight: "bold", fontSize: "xx-large"}}>Bank Technology Operations</label></Tab>
           <Tab>Daily Healthcheck</Tab>
           <Tab>Batch Notification</Tab>
         </TabList>
+        <TabPanel></TabPanel>
         <TabPanel>
           <div>
-            <div>
+            <div style={{paddingTop: "30px"}}>
               <label style={{color: "#009EDC", fontWeight: "bold", fontSize: "x-large"}}>BDX Healthcheck Dashboard</label>
             </div>
             <div style={{overflow: "hidden", width: "100%"}}>
