@@ -1,6 +1,6 @@
 import React, { PureComponent, useState } from 'react';
 import { PieChart, Pie, Sector, Cell, ResponsiveContainer, Tooltip, Legend } from 'recharts';
-import styles from "./index.css"
+import "./index.css";
 import Component from './Table';
 
 const data = [
@@ -22,15 +22,15 @@ const Example = () => {
     };
 
     data.map((entry, index) => {
-        console.log(Object.keys(entry)[0]);
+        console.log("server", Object.values(entry));
     });
 
     return (
         <div>
-            <div id="donuts_wrapper" className={styles.donuts_wrapper}>
+            <div className="donuts_wrapper">
                 {
                 data.map((entry, index) => (
-                    <div id="donut_wrapper" className={styles.donut_wrapper}>
+                    <div className="donut_wrapper">
                         <PieChart width={0.196 * window.innerWidth} height={.30 * window.innerHeight} title={Object.keys(entry)[0]}>
                             <Pie 
                                 
@@ -53,7 +53,7 @@ const Example = () => {
                             
                             {/* <Legend /> */}
                         </PieChart>
-                        <div id="donut_header"><label className={styles.donut_header}>{Object.keys(entry)[0].toUpperCase()}</label></div>
+                        <div className="donut_header"><label>{Object.keys(entry)[0].toUpperCase()}</label></div>
                         {/* <div id="donut_header"><label className={styles.donut_header}>This is long name</label></div> */}
                     </div>
             ))}

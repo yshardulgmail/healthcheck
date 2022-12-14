@@ -5,7 +5,7 @@ import { useTheme } from '@table-library/react-table-library/theme';
 import { DEFAULT_OPTIONS, getTheme } from '@table-library/react-table-library/chakra-ui';
 import { Box, Stack, Input, InputGroup, InputLeftElement } from '@chakra-ui/react';
 import { FaSearch } from 'react-icons/fa';
-import styles from './index.css';
+import './index.css';
 import red from "./resources/red.png"
 import green from "./resources/green.png"
 // import { nodes } from './data';
@@ -229,7 +229,7 @@ const theme = useTheme(cust_theme);
             pointerEvents="none"
             children={<FaSearch style={{ color: '#4a5568' }} />}
           />
-          <Input class={styles.search_input} placeholder="Search Application" value={search} onChange={handleSearch} />
+          <Input className="search_input" placeholder="Search Application" value={search} onChange={handleSearch} />
         </InputGroup>
       </Stack>
       <br />

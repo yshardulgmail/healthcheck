@@ -59,7 +59,7 @@ const App = () => {
     <div style={{background:"#009EDC"}}>
       <Tabs selectedIndex={tabIndex} onSelect={(index) => setTabIndex(index)}>
         <TabList>
-          <Tab disabled><label style={{color: "white", fontWeight: "bold", fontSize: "xx-large"}}>Bank Technology Operations</label></Tab>
+          <Tab disabled><label style={{color: "white", fontWeight: "bold", fontSize: "x-large"}}>Bank Technology Operations</label></Tab>
           <Tab>Daily Healthcheck</Tab>
           <Tab>Batch Notification</Tab>
         </TabList>
@@ -67,7 +67,7 @@ const App = () => {
         <TabPanel>
           <div>
             <div style={{paddingTop: "30px"}}>
-              <label style={{color: "#009EDC", fontWeight: "bold", fontSize: "x-large"}}>BDX Healthcheck Dashboard</label>
+              <label style={{color: "black", fontWeight: "bold", fontSize: "x-large"}}>BDX Healthcheck Dashboard</label>
             </div>
             <div style={{overflow: "hidden", width: "100%"}}>
             <button onClick={() => window.location.reload()} className="button modal_send" style={{marginLeft: "10px"}}>

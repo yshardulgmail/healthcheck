@@ -40,16 +40,16 @@ code {
   color: white !important;
 }
 
-#donuts_wrapper {
+.donuts_wrapper {
   width: 100%;
   overflow: hidden;
 }
 
-#donut_wrapper {
+.donut_wrapper {
   float: left;
 }
 
-#donut_header {
+.donut_header {
   text-align: center;
   font-weight: 800;
   font-size: large;
@@ -78,7 +78,12 @@ path .recharts-sector:hover {
 }
 .css-0{
   margin: auto;
+  
+}
+
+.search_input {
   width: 95%;
+  height: 30px;
 }
 
 .modal {

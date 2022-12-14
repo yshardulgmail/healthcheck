@@ -1,0 +1,66 @@
+use healthcheck;
+
+CREATE TABLE applications (
+    app_id int PRIMARY KEY,
+    app_name nvarchar(50) NOT NULL,  
+    app_url nvarchar(50) NOT NULL, 
+    server nvarchar(50)
+);
+
+CREATE TABLE app_status (
+    app_id int NOT NULL,
+    check_time nvarchar(50) NOT NULL,
+    status nvarchar(50)  
+);
+
+
+CREATE TABLE login (
+    username int PRIMARY KEY,
+    password nvarchar(50) NOT NULL
+);
+
+
+select * from applications;
+
+insert into applications values(1, 'Goggle', 'https://www.google.com', 'BDS');
+
+insert into applications values(2, 'Facebook', 'https://www.facebook.com', 'BDS');
+insert into applications values(3, 'Goggle', 'https://www.google.com', 'DNS');
+insert into applications values(4, 'Facebook', 'https://www.facebook.com', 'DNS');
+insert into applications values(5, 'Goggle', 'https://www.google.com', 'BDSA');
+insert into applications values(6, 'Facebook', 'https://www.facebook.com', 'BDSA');
+insert into applications values(7, 'Goggle', 'https://www.google.com', 'BAMS');
+insert into applications values(8, 'Facebook', 'https://www.facebook.com', 'BAMS');
+insert into applications values(9, 'Goggle', 'https://www.google.com', 'BAQS');
+insert into applications values(10, 'Facebook', 'https://www.facebook.com', 'BAQS');
+
+insert into app_status values(1, '4:30PM', 'UP');
+insert into app_status values(1, '5:00PM', 'UP');
+insert into app_status values(1, '5:30PM', 'DOWN');
+insert into app_status values(2, '4:30PM', 'UP');
+insert into app_status values(2, '5:00PM', 'DOWN');
+insert into app_status values(2, '5:30PM', 'UP');
+insert into app_status values(3, '4:30PM', 'DOWN');
+insert into app_status values(3, '5:00PM', 'UP');
+insert into app_status values(3, '5:30PM', 'DOWN');
+insert into app_status values(4, '4:30PM', 'UP');
+insert into app_status values(4, '5:00PM', 'UP');
+insert into app_status values(4, '5:30PM', 'DOWN');
+insert into app_status values(5, '4:30PM', 'UP');
+insert into app_status values(5, '5:00PM', 'UP');
+insert into app_status values(5, '5:30PM', 'UP');
+insert into app_status values(6, '4:30PM', 'UP');
+insert into app_status values(6, '5:00PM', 'UP');
+insert into app_status values(6, '5:30PM', 'DOWN');
+insert into app_status values(7, '4:30PM', 'DOWN');
+insert into app_status values(7, '5:00PM', 'UP');
+insert into app_status values(7, '5:30PM', 'UP');
+insert into app_status values(8, '4:30PM', 'DOWN');
+insert into app_status values(8, '5:00PM', 'DOWN');
+insert into app_status values(8, '5:30PM', 'DOWN');
+insert into app_status values(9, '4:30PM', 'UP');
+insert into app_status values(9, '5:00PM', 'UP');
+insert into app_status values(9, '5:30PM', 'DOWN');
+insert into app_status values(10, '4:30PM', 'UP');
+insert into app_status values(10, '5:00PM', 'UP');
+insert into app_status values(10, '5:30PM', 'UP');
