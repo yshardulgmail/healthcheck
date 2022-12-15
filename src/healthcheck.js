@@ -9,6 +9,8 @@ import BatchTable from './BatchTable';
 
 const App = () => {
   const [tabIndex, setTabIndex] = useState(1);
+  const [appData, setAppData] = useState([]);
+  const [filter, setFilter] = useState(3);
 
   useEffect(() => {
     // clearTimer(getDeadTime());
@@ -18,14 +20,97 @@ const App = () => {
       // if (Ref.current) clearInterval(Ref.current);
       let deadline = new Date();
       startTimer(deadline.setSeconds(deadline.getSeconds() +60));
-      window.location.reload();
+      tabIndex === 1 && fetchData();
     }, 60*1000);
     // Ref.current = id;
   
     return () => clearInterval(interval);
   }, []);
 
+  // const fetchdata = async () => {
+  //   await fetch('/api/healthcheck/appstatus', {
+  //     method: 'GET',
+  //     mode: 'no-cors',
+  //     // headers: {
+  //     //     'Content-Type': 'application/json',
+  //     //     'Access-Control-Allow-Origin': '*',
+  //     //     'Access-Control-Allow-Headers': 'Origin, X-Requested-With, Content-Type, Accept'
+  //     // }
+  //   })
+  //      .then((response) => response.json())
+  //      .then((data) => {
+  //         console.log(data);
+  //         // setAppData(data.text());
+  //      })
+  //      .catch((err) => {
+  //         console.log(err.message);
+  //      });
+  // }
   
+  async function fetchData() {
+    fetch('/api/healthcheck/appstatus', {
+      method: 'GET',
+      mode: 'no-cors',
+      // headers: {
+      //     'Content-Type': 'application/json',
+      //     'Access-Control-Allow-Origin': '*',
+      //     'Access-Control-Allow-Headers': 'Origin, X-Requested-With, Content-Type, Accept'
+      // }
+    })
+       .then((response) => response.json())
+       .then((data) => {
+          // console.log(data);
+          const tableNodes = {};
+          const donutData = {};
+          let rowId = 0;
+          let tempStart = 0;
+          let tempEnd = filter;
+
+          while(tempEnd <= data.length) {
+            const tempData = data.slice(tempStart, tempEnd);
+            const node = {};
+            let server = "";
+            tempData.map(item => {
+              
+              if(node.hasOwnProperty(rowId)) {
+                node[item.check_time] = item.status;
+              }
+              else{
+                node["id"] = rowId;
+                node["appName"] = item.app_name;
+                node["appUrl"] = item.app_url;
+                node[item.check_time] = item.status;
+                node["status"] = item.status;
+              }
+              server = item.server;
+            });
+            rowId++;
+            if(tableNodes.hasOwnProperty(server)) {
+              console.log("inside");
+              tableNodes[server].push(node);
+            }
+            else {
+              tableNodes[server] = [node];
+            }
+            tempStart = tempEnd;
+            tempEnd = tempEnd + filter;
+          }
+          console.log(tableNodes);
+          
+          setAppData(data);
+       })
+       .catch((err) => {
+          console.log(err.message);
+       });
+        
+  }
+
+  useEffect(() => {
+    fetchData();
+  }, []); 
+
+  // useEffect(() => fetchdata(), []);
+
     // The state for our timer
     const [timer, setTimer] = useState('1:00');
   
@@ -70,7 +155,7 @@ const App = () => {
               <label style={{color: "black", fontWeight: "bold", fontSize: "x-large"}}>BDX Healthcheck Dashboard</label>
             </div>
             <div style={{overflow: "hidden", width: "100%"}}>
-            <button onClick={() => window.location.reload()} className="button modal_send" style={{marginLeft: "10px"}}>
+            <button onClick={() => fetchData()} className="button modal_send" style={{marginLeft: "10px"}}>
                 Refresh Now!!
               </button>
               <label style={{float: "right"}}>Page will refresh in 1 min</label>
