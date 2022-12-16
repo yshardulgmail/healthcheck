@@ -2,6 +2,8 @@ import React, { PureComponent, useState, useEffect } from 'react';
 import { PieChart, Pie, Sector, Cell, ResponsiveContainer, Tooltip, Legend } from 'recharts';
 import "./index.css";
 import Component from './Table';
+import Countdown from 'react-countdown';
+import { right } from '@popperjs/core';
 
 
 const COLORS = ['green', 'red'];
@@ -29,16 +31,13 @@ const Example = (props) => {
                     = getTimeRemaining(e);
         if (total >= 0) {
   
-            // update the timer
-            // check if less than 10 then we need to 
-            // add '0' at the beginning of the variable
             setTimer(
                 (minutes > 9 ? minutes : '0' + minutes) + ':'
                 + (seconds > 9 ? seconds : '0' + seconds)
             )
         }
     }
-    async function fetchData() {
+    async function fetchData(manual=false) {
         fetch('/api/healthcheck/appstatus', {
           method: 'GET',
           mode: 'no-cors',
@@ -58,37 +57,37 @@ const Example = (props) => {
             let tempEnd = filter;
 
             while(tempEnd <= data.length) {
-            const tempData = data.slice(tempStart, tempEnd);
-            const node = {};
-            let server = "";
-            let status = "";
-            tempData.map(item => {
-                if(node.hasOwnProperty(rowId)) {
-                    node[item.check_time] = item.status;
+                const tempData = data.slice(tempStart, tempEnd);
+                const node = {};
+                let server = "";
+                let status = "";
+                tempData.map(item => {
+                    if(node.hasOwnProperty(rowId)) {
+                        node[item.check_time] = item.status;
+                    }
+                    else{
+                        node["id"] = rowId;
+                        node["appName"] = item.app_name;
+                        node["appUrl"] = item.app_url;
+                        node[item.check_time] = item.status;
+                        node["status"] = item.status;
+                    }
+                    server = item.server;
+                });
+                rowId++;
+                if(!tableNodes.hasOwnProperty(server)) {
+                    tableNodes[server] = [];
                 }
-                else{
-                    node["id"] = rowId;
-                    node["appName"] = item.app_name;
-                    node["appUrl"] = item.app_url;
-                    node[item.check_time] = item.status;
-                    node["status"] = item.status;
+                tableNodes[server].push(node);
+
+                if(!donutData.hasOwnProperty(server)) {
+                    console.log("inside");
+                    donutData[server] = {"UP": [], "DOWN": []}
                 }
-                server = item.server;
-            });
-            rowId++;
-            if(!tableNodes.hasOwnProperty(server)) {
-                tableNodes[server] = [];
-            }
-            tableNodes[server].push(node);
+                donutData[server][node["status"]].push(node);
 
-            if(!donutData.hasOwnProperty(server)) {
-                console.log("inside");
-                donutData[server] = {"UP": [], "DOWN": []}
-            }
-            donutData[server][node["status"]].push(node);
-
-            tempStart = tempEnd;
-            tempEnd = tempEnd + filter;
+                tempStart = tempEnd;
+                tempEnd = tempEnd + filter;
             }
 
             // const data = [
@@ -156,10 +155,10 @@ const Example = (props) => {
               <label style={{color: "black", fontWeight: "bold", fontSize: "x-large"}}>BDX Healthcheck Dashboard</label>
             </div>
             <div style={{overflow: "hidden", width: "100%"}}>
-            <button onClick={() => fetchData()} className="button modal_send" style={{marginLeft: "10px"}}>
+            <button onClick={() => fetchData(true)} className="button modal_send" style={{marginLeft: "10px"}}>
                 Refresh Now!!
               </button>
-              <label style={{float: "right"}}>Page will refresh in 1 min</label>
+              <label style={{float: "right"}}>Page will refresh in </label> <Countdown style={{float: "right"}} date={Date.now() + 10000} />
               
 
             </div>
