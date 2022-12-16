@@ -53,17 +53,27 @@ const Example = (props) => {
             const tableNodes = {};
             const donutData = {};
             let rowId = 0;
-            let tempStart = 0;
+            let counter = 1;
             let tempEnd = filter;
+            const processedAppData = {};
+            data.map(item => {
+                const appId = item["APP_ID"];
+                if(!processedAppData.hasOwnProperty(appId)) {
+                    processedAppData[appId] = []
+                }
+                processedAppData[appId].push(item);
+            });
 
-            while(tempEnd <= data.length) {
-                const tempData = data.slice(tempStart, tempEnd);
+            Object.keys(processedAppData).map(app => {
+                const tempData = processedAppData[app].slice(-filter);
                 const node = {};
                 let server = "";
                 let status = "";
                 tempData.map(item => {
+                    console.log(counter);
                     if(node.hasOwnProperty(rowId)) {
                         node[item.check_time] = item.status;
+                        counter++;
                     }
                     else{
                         node["id"] = rowId;
@@ -71,6 +81,7 @@ const Example = (props) => {
                         node["appUrl"] = item.app_url;
                         node[item.check_time] = item.status;
                         node["status"] = item.status;
+                        counter = 1;
                     }
                     server = item.server;
                 });
@@ -85,10 +96,7 @@ const Example = (props) => {
                     donutData[server] = {"UP": [], "DOWN": []}
                 }
                 donutData[server][node["status"]].push(node);
-
-                tempStart = tempEnd;
-                tempEnd = tempEnd + filter;
-            }
+            });
 
             // const data = [
             // { server0: [{ name: 'UP', value: 30, server: "server0" }, { name: 'DOWN', value: 10, server: "server0" }]},
@@ -158,7 +166,7 @@ const Example = (props) => {
             <button onClick={() => fetchData(true)} className="button modal_send" style={{marginLeft: "10px"}}>
                 Refresh Now!!
               </button>
-              <label style={{float: "right"}}>Page will refresh in </label> <Countdown style={{float: "right"}} date={Date.now() + 10000} />
+              {/* <label style={{float: "right"}}>Page will refresh in </label> <Countdown style={{float: "right"}} date={Date.now() + 10000} /> */}
               
 
             </div>
@@ -166,7 +174,7 @@ const Example = (props) => {
                 {
                 data.map((entry, index) => (
                     <div className="donut_wrapper">
-                        <PieChart width={0.196 * window.innerWidth} height={.30 * window.innerHeight} title={Object.keys(entry)[0]}>
+                        <PieChart width={0.196 * window.innerWidth} height={.50 * window.innerHeight} title={Object.keys(entry)[0]}>
                             <Pie 
                                 
                                 data={entry[Object.keys(entry)[0]]}
@@ -196,7 +204,6 @@ const Example = (props) => {
             <br />
             <br />
             <br />
-            <h1>Application Details:</h1>
             <div>
                 <Component key={server} server={server} status={status} data={appData.tableData}/>
             </div>
