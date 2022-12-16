@@ -219,7 +219,7 @@ td:nth-child(n+3) {
   /* display:block; */
   width: 100%;
   overflow: auto;
-  height: 100px;
+  /* height: 100px; */
 }
 
 .styled-table th,
@@ -228,9 +228,6 @@ td:nth-child(n+3) {
     /* text-align: center; */
 }
 
-.styled-table thead tr {
-  /* display: block; */
-}
 
 .styled-table tbody tr {
   border-bottom: 1px solid #dddddd;
