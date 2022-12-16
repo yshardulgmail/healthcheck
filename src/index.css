@@ -144,7 +144,9 @@ path .recharts-sector:hover {
 
 .modal_send {
   float: right;
-  margin-right: 40px;
+  margin-right: 15px;
+  margin-top: 5px;
+  height: 30px;
 }
 
 .modal-title {
@@ -156,5 +158,89 @@ path .recharts-sector:hover {
   border-top: 1px solid #eee;
   border-bottom: 1px solid #eee;
   overflow-y: auto;
+}
+
+/* th:nth-child(1) {
+  width: 40%;
+} */
+
+th:nth-child(-n+2) {
+  /* width: 30%; */
+  width: 200px;
+  text-align: left;
+}
+
+th:nth-child(n+3) {
+  width: 50px;
+  text-align: center;
+}
+
+
+td:nth-child(-n+2) {
+  /* width: 30%; */
+  width: 200px;
+  text-align: left;
+}
+
+/* td:nth-child(2) {
+  width: 200px;
+} */
+
+td:nth-child(n+3) {
+  width: 50px;
+  text-align: center;
+}
+
+.table_container {
+  width: 1400px;
+  overflow: hidden;
+  /* width: 800px; */
+}
+
+.styled-table {
+  /* table-layout: fixed; */
+  border-collapse: collapse;
+  margin: 10px 0;
+  font-size: 1em;
+  font-family: sans-serif;
+  min-width: 100%;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+  /* display: grid; */
+}
+
+.styled-table thead tr {
+  background-color: black;
+  /* display: block; */
+  color: #ffffff;
+  /* text-align: center; */
+}
+
+.styled-table tbody {
+  /* display:block; */
+  width: 100%;
+  overflow: auto;
+  height: 100px;
+}
+
+.styled-table th,
+.styled-table td {
+    padding: 12px 15px;
+    /* text-align: center; */
+}
+
+.styled-table thead tr {
+  /* display: block; */
+}
+
+.styled-table tbody tr {
+  border-bottom: 1px solid #dddddd;
+}
+
+.styled-table tbody tr:nth-of-type(even) {
+  background-color: rgb(210, 233, 251);
+}
+
+.styled-table tbody tr:last-of-type {
+  border-bottom: 2px solid black;
 }
 

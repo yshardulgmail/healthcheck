@@ -1,7 +1,7 @@
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import 'react-tabs/style/react-tabs.css';
 import { useState, useEffect } from 'react';
-import Example from './Donut1';
+import Example from './DailyHealthcheck';
 import BatchTable from './BatchTable';
 // import "./index.css"
 
