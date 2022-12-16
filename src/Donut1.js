@@ -167,7 +167,7 @@ const Example = (props) => {
                 {
                 data.map((entry, index) => (
                     <div className="donut_wrapper">
-                        <PieChart width={0.196 * window.innerWidth} height={.50 * window.innerHeight} title={Object.keys(entry)[0]}>
+                        <PieChart width={0.196 * window.innerWidth} height={.30 * window.innerHeight} title={Object.keys(entry)[0]}>
                             <Pie 
                                 
                                 data={entry[Object.keys(entry)[0]]}
