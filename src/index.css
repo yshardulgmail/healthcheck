@@ -12,11 +12,6 @@ code {
     monospace;
 }
 
-.recharts-wrapper {
-  width: 20% !important;
-  height: 40% !important;
-}
-
 .recharts-legend-wrapper {
   width: 100% !important;
 }
@@ -43,16 +38,25 @@ code {
 .donuts_wrapper {
   width: 100%;
   overflow: hidden;
+  height: 40%;
 }
 
 .donut_wrapper {
   float: left;
+  /* width: 19.6%;
+  height: 40%; */
 }
 
 .donut_header {
-  text-align:r7trw2 center;
+  margin-top: 20px;
+  text-align: center;
   font-weight: 800;
   font-size: large;
+}
+
+.recharts-wrapper {
+  height: 100% !important;
+  width: 100% !important;
 }
 
 #stopped_img {
@@ -202,7 +206,7 @@ td:nth-child(n+3) {
   border-collapse: collapse;
   margin: 10px 0;
   font-size: 1em;
-  font-family: sans-serif;
+  /* font-family: sans-serif; */
   min-width: 100%;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
   /* display: grid; */

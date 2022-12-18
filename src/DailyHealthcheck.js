@@ -1,4 +1,4 @@
-import React, { PureComponent, useState, useEffect } from 'react';
+import React, { PureComponent, useState, useEffect, useRef } from 'react';
 import { PieChart, Pie, Sector, Cell, ResponsiveContainer, Tooltip, Legend } from 'recharts';
 import "./index.css";
 import Component from './Table';
@@ -10,42 +10,34 @@ import { Box, Stack, Input, InputGroup, InputLeftElement } from '@chakra-ui/reac
 
 const COLORS = ['green', 'red'];
 
-const Example = (props) => {
+const DailyHealthcheck = (props) => {
     const [server, setServer] = React.useState('');
     const [status, setStatus] = React.useState('');
     const [appData, setAppData] = useState({tableData: {}, donutData: []});
     // const [filter, setFilter] = useState(3);
     const [timer, setTimer] = useState('1:00');
     const [search, setSearch] = React.useState('');
+    const [currentTime, setCurrentTime] = useState(null);
+    const filterRef = useRef();
+
 
     const handleSearch = (event) => {
         event.preventDefault();
         console.log(event.target.value);
         setSearch(event.target.value);
     };
-  
-    // const Ref = useRef(null);
-    const getTimeRemaining = (e) => {
-        const total = Date.parse(e) - Date.parse(new Date());
-        const seconds = Math.floor((total / 1000) % 60);
-        const minutes = Math.floor((total / 1000 / 60) % 60);
-        return {
-            total, minutes, seconds
-        };
+
+    const getTime = () => {
+        const date = new Date(new Date().toLocaleString('en-US', {timeZone: 'America/New_York'}));
+        let hours = date.getHours() > 12 ? date.getHours() - 12 : date.getHours();
+        const am_pm = date.getHours() >= 12 ? "PM" : "AM";
+        hours = hours < 10 ? "0" + hours : hours;
+        const minutes = date.getMinutes() < 10 ? "0" + date.getMinutes() : date.getMinutes();
+        const time = hours + ":" + minutes + " " + am_pm;
+
+        return time;
     }
-  
-  
-    const startTimer = (e) => {
-        let { total, minutes, seconds } 
-                    = getTimeRemaining(e);
-        if (total >= 0) {
-  
-            setTimer(
-                (minutes > 9 ? minutes : '0' + minutes) + ':'
-                + (seconds > 9 ? seconds : '0' + seconds)
-            )
-        }
-    }
+
     async function fetchData(manual=false, filter=3) {
         fetch('/api/healthcheck/appstatus', {
           method: 'GET',
@@ -63,7 +55,6 @@ const Example = (props) => {
             const tableNodes = {};
             const donutData = {};
             let rowId = 0;
-            let counter = 1;
             let tempEnd = filter;
             const processedAppData = {};
             data.map(item => {
@@ -74,19 +65,61 @@ const Example = (props) => {
                 processedAppData[appId].push(item);
             });
 
-            
+            if(manual) {
+                Object.keys(processedAppData).map(app => {
+                    const singleAppData = processedAppData[app][0];
+                    // let status = "DOWN";
+
+                    // This is random status generator. Need to remove when app urls are working
+                    const statuses = ["UP", "DOWN"];
+                    let status = statuses[Math.floor(Math.random() * statuses.length)];
+                    fetch(singleAppData.app_url, {
+                        method: 'GET',
+                        mode: 'no-cors',
+                      })
+                        .then(res => res.text())
+                        .then(text => {
+                            console.log("fetched")
+                            if(text.toLowerCase().includes("\"up\"")) {
+                                status = "UP";
+                            }
+                        });
+                    const currentAppStatus = {};
+                    currentAppStatus["APP_ID"] = app;
+                    currentAppStatus["app_name"] = singleAppData.app_name;
+                    currentAppStatus["app_url"] = singleAppData.app_url;
+                    currentAppStatus["server"] = singleAppData.server;
+                    currentAppStatus["check_time"] = getTime();
+                    currentAppStatus["status"] = status;
+                    processedAppData[app].push(currentAppStatus);
+                });
+            }
 
             Object.keys(processedAppData).map(app => {
-                const tempData = processedAppData[app].slice(-filter);
+                let tempData = [];
+                
+                if(filter != 12){
+                    const tempFilter = manual ? (filter * 2) + 1 : filter * 2;
+
+                    tempData = processedAppData[app].slice(-tempFilter);
+                    console.log("length: ", tempData);
+                }
+                else{
+                    let counter = 1;
+                    processedAppData[app].map(item =>{
+                        if(item.check_time.includes(":00") && counter <= 12) {
+                            tempData.push(item);
+                            counter++;
+                        }
+                    });
+                }
+                
                 console.log("tempData: ",tempData);
                 const node = {};
                 let server = "";
-                let status = "";
                 tempData.map(item => {
-                    console.log(counter);
                     if(node.hasOwnProperty(rowId)) {
                         node[item.check_time] = item.status;
-                        counter++;
                     }
                     else{
                         node["id"] = rowId;
@@ -94,7 +127,6 @@ const Example = (props) => {
                         node["appUrl"] = item.app_url;
                         node[item.check_time] = item.status;
                         node["status"] = item.status;
-                        counter = 1;
                     }
                     server = item.server;
                 });
@@ -130,6 +162,7 @@ const Example = (props) => {
             }
             );
               // console.log(nodes);
+            setCurrentTime(Date.now() + 60*1000);
             setAppData({tableData: tableNodes, donutData: finalData});
         })
         .catch((err) => {
@@ -142,20 +175,15 @@ const Example = (props) => {
         fetchData();
       }, []); 
 
-      useEffect(() => {
-        // clearTimer(getDeadTime());
-        const interval = setInterval(() => {
-          console.log("Interval: ", interval);
-          setTimer('00:00:10');
-          // if (Ref.current) clearInterval(Ref.current);
-          let deadline = new Date();
-          startTimer(deadline.setSeconds(deadline.getSeconds() +60));
-          props.tabIndex === 1 && fetchData();
-        }, 60*1000);
-        // Ref.current = id;
+    //   useEffect(() => {
+    //     // clearTimer(getDeadTime());
+    //     const interval = setInterval(() => {
+    //       props.tabIndex === 1 && fetchData();
+    //     }, 60*1000);
+    //     // Ref.current = id;
       
-        return () => clearInterval(interval);
-      }, []);
+    //     return () => clearInterval(interval);
+    //   }, []);
     // const tableNodes = props.data;
     const clicking = (data) => {
         console.log(server)
@@ -164,42 +192,59 @@ const Example = (props) => {
     };
 
     const changeFilter = (value) => {
+        filterRef.current = value;
         fetchData(false, value);
-
     };
+
+    const handleRefreshNow = () => {
+        fetchData(true, filterRef.current);
+    };
+
 
     const data = appData.donutData;
     // console.log("donut data", data);
     // data.map((entry, index) => {
     //     console.log("server", Object.values(entry));
     // });
-
     if(Object.keys(appData.tableData).length > 0){
+        const serverName = server != "" ? server : Object.keys(appData.donutData[0])[0];
+        const selectedStatus = status != "" ? " with Status: " + status.toUpperCase() : "";
         return (
             <div>
                 
                 <div style={{paddingTop: "30px"}}>
                 <label style={{color: "black", fontWeight: "bold", fontSize: "x-large"}}>BDX Healthcheck Dashboard</label>
+                <div style={{float: "right"}}>
+                    <Countdown
+                        key={currentTime}
+                        date={Date.now() + 60*1000} 
+                        onComplete={() => {
+                            props.tabIndex === 1 && fetchData();
+                        }}
+                        renderer={({ hours, minutes, seconds, completed }) => {
+                            if(Object.keys(appData.tableData).length > 0)
+                                return <span>{minutes}:{seconds}</span>;
+                            else
+                                return <span></span>
+                        }}/>
+                </div>
+                <label style={{float: "right"}}>Page will refresh in </label> 
                 </div>
                 
                 <div className="donuts_wrapper">
                     {
                     data.map((entry, index) => (
                         <div className="donut_wrapper">
-                            <PieChart width={0.196 * window.innerWidth} height={.50 * window.innerHeight} title={Object.keys(entry)[0]}>
+                            <PieChart width={0.195 * window.innerWidth} height={.35 * window.innerHeight} title={Object.keys(entry)[0].toUpperCase()}>
                                 <Pie 
                                     
                                     data={entry[Object.keys(entry)[0]]}
-                                    cx={120}
-                                    cy={200}
+                                    cy={150}
                                     innerRadius={30}
                                     outerRadius={80}
                                     fill="#8884d8"
-                                    // paddingAngle={5}
                                     dataKey="value"
-                                    onClick={clicking}
-                                    // label={Object.keys(entry)[0]}
-                                    >
+                                    onClick={clicking}>
                                     {data.map((entry, index) => (
                                         <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                                     ))}
@@ -216,7 +261,9 @@ const Example = (props) => {
                 <br />
                 <br />
                 <br />
-                <div>
+                <br />
+                <label style={{color: "black", fontWeight: "bold", fontSize: "large"}}>{serverName} Applications {selectedStatus}</label>
+                <div style={{marginTop: "15px"}}>
                     <Stack spacing={10}>
                         <InputGroup>
                             <InputLeftElement
@@ -225,7 +272,7 @@ const Example = (props) => {
                             />
                             <Input className="search_input" placeholder="Search Application" value={search} onChange={handleSearch} />
                             <div style={{overflow: "hidden", width: "50%"}}>
-                                <button onClick={() => fetchData(true)} className="button modal_send" >
+                                <button onClick={() => handleRefreshNow()} className="button modal_send" >
                                     Refresh Now!!
                                 </button>
                                 <select autocomplete="off" onChange={(evt) => changeFilter(evt.target.value)} className="button modal_send" >
@@ -233,9 +280,6 @@ const Example = (props) => {
                                     <option value="6" >LAST 6 HOURS</option>
                                     <option value="12" >LAST 12 HOURS</option>
                                 </select>
-                                {/* <label style={{float: "right"}}>Page will refresh in </label> <Countdown style={{float: "right"}} date={Date.now() + 10000} /> */}
-                            
-
                             </div>
                         </InputGroup>
                     </Stack>
@@ -252,4 +296,4 @@ const Example = (props) => {
     }
 }
 
-export default Example;
+export default DailyHealthcheck;

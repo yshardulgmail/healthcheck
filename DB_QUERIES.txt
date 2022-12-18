@@ -9,10 +9,11 @@ CREATE TABLE applications (
 
 CREATE TABLE app_status (
     app_id int NOT NULL,
-    check_time nvarchar(50) NOT NULL,
+    check_time DATETIME,
     status nvarchar(50)  
 );
 
+alter table app_status alter column check_time DATETIME;
 
 CREATE TABLE login (
     username int PRIMARY KEY,
