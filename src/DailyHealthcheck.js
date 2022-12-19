@@ -214,7 +214,7 @@ const DailyHealthcheck = (props) => {
                 
                 <div style={{paddingTop: "30px"}}>
                 <label style={{color: "black", fontWeight: "bold", fontSize: "x-large"}}>BDX Healthcheck Dashboard</label>
-                <div style={{float: "right"}}>
+                {/* <div style={{float: "right"}}>
                     <Countdown
                         key={currentTime}
                         date={Date.now() + 60*1000} 
@@ -228,7 +228,7 @@ const DailyHealthcheck = (props) => {
                                 return <span></span>
                         }}/>
                 </div>
-                <label style={{float: "right"}}>Page will refresh in </label> 
+                <label style={{float: "right"}}>Page will refresh in </label>  */}
                 </div>
                 
                 <div className="donuts_wrapper">

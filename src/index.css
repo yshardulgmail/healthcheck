@@ -168,19 +168,19 @@ path .recharts-sector:hover {
   width: 40%;
 } */
 
-th:nth-child(-n+2) {
+.styled-table th:nth-child(-n+2) {
   /* width: 30%; */
   width: 200px;
   text-align: left;
 }
 
-th:nth-child(n+3) {
+.styled-table th:nth-child(n+3) {
   width: 50px;
   text-align: center;
 }
 
 
-td:nth-child(-n+2) {
+.styled-table td:nth-child(-n+2) {
   /* width: 30%; */
   width: 200px;
   text-align: left;
@@ -190,7 +190,7 @@ td:nth-child(-n+2) {
   width: 200px;
 } */
 
-td:nth-child(n+3) {
+.styled-table td:nth-child(n+3) {
   width: 50px;
   text-align: center;
 }
