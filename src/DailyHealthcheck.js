@@ -2,9 +2,9 @@ import React, { PureComponent, useState, useEffect, useRef } from 'react';
 import { PieChart, Pie, Sector, Cell, ResponsiveContainer, Tooltip, Legend } from 'recharts';
 import "./index.css";
 import Component from './Table';
-import Countdown from 'react-countdown';
 import { right } from '@popperjs/core';
-import { FaSearch } from 'react-icons/fa';
+import fetch from 'node-fetch';
+import { FaSearch, FaSortAlphaUpAlt } from 'react-icons/fa';
 import { Box, Stack, Input, InputGroup, InputLeftElement } from '@chakra-ui/react';
 
 
@@ -28,7 +28,8 @@ const DailyHealthcheck = (props) => {
     };
 
     const getTime = () => {
-        const date = new Date(new Date().toLocaleString('en-US', {timeZone: 'America/New_York'}));
+        // const date = new Date(new Date().toLocaleString('en-US', {timeZone: 'America/New_York'}));
+        const date = new Date();
         let hours = date.getHours() > 12 ? date.getHours() - 12 : date.getHours();
         const am_pm = date.getHours() >= 12 ? "PM" : "AM";
         hours = hours < 10 ? "0" + hours : hours;
@@ -38,8 +39,8 @@ const DailyHealthcheck = (props) => {
         return time;
     }
 
-    async function fetchData(manual=false, filter=3) {
-        fetch('/api/healthcheck/appstatus', {
+    function fetchData(manual=false, filter=3) {
+        fetch('/api/healthcheck/appstatus/'+manual, {
           method: 'GET',
           mode: 'no-cors',
           // headers: {
@@ -65,36 +66,6 @@ const DailyHealthcheck = (props) => {
                 processedAppData[appId].push(item);
             });
 
-            if(manual) {
-                Object.keys(processedAppData).map(app => {
-                    const singleAppData = processedAppData[app][0];
-                    // let status = "DOWN";
-
-                    // This is random status generator. Need to remove when app urls are working
-                    const statuses = ["UP", "DOWN"];
-                    let status = statuses[Math.floor(Math.random() * statuses.length)];
-                    fetch(singleAppData.app_url, {
-                        method: 'GET',
-                        mode: 'no-cors',
-                      })
-                        .then(res => res.text())
-                        .then(text => {
-                            console.log("fetched")
-                            if(text.toLowerCase().includes("\"up\"")) {
-                                status = "UP";
-                            }
-                        });
-                    const currentAppStatus = {};
-                    currentAppStatus["APP_ID"] = app;
-                    currentAppStatus["app_name"] = singleAppData.app_name;
-                    currentAppStatus["app_url"] = singleAppData.app_url;
-                    currentAppStatus["server"] = singleAppData.server;
-                    currentAppStatus["check_time"] = getTime();
-                    currentAppStatus["status"] = status;
-                    processedAppData[app].push(currentAppStatus);
-                });
-            }
-
             Object.keys(processedAppData).map(app => {
                 let tempData = [];
                 
@@ -107,11 +78,14 @@ const DailyHealthcheck = (props) => {
                 else{
                     let counter = 1;
                     processedAppData[app].map(item =>{
-                        if(item.check_time.includes(":00") && counter <= 12) {
+                        if(item.check_time.includes(":45") && counter <= 12) {
                             tempData.push(item);
                             counter++;
                         }
                     });
+                    if(manual) {
+                        tempData.push(processedAppData[app][processedAppData[app].length - 1]);
+                    }
                 }
                 
                 console.log("tempData: ",tempData);
@@ -123,10 +97,12 @@ const DailyHealthcheck = (props) => {
                     }
                     else{
                         node["id"] = rowId;
+                        node["appId"] = app;
                         node["appName"] = item.app_name;
                         node["appUrl"] = item.app_url;
                         node[item.check_time] = item.status;
                         node["status"] = item.status;
+                        node["server"] = item.server;
                     }
                     server = item.server;
                 });
@@ -175,16 +151,6 @@ const DailyHealthcheck = (props) => {
         fetchData();
       }, []); 
 
-    //   useEffect(() => {
-    //     // clearTimer(getDeadTime());
-    //     const interval = setInterval(() => {
-    //       props.tabIndex === 1 && fetchData();
-    //     }, 60*1000);
-    //     // Ref.current = id;
-      
-    //     return () => clearInterval(interval);
-    //   }, []);
-    // const tableNodes = props.data;
     const clicking = (data) => {
         console.log(server)
         setServer(data["server"]);
@@ -196,16 +162,12 @@ const DailyHealthcheck = (props) => {
         fetchData(false, value);
     };
 
-    const handleRefreshNow = () => {
+    const handleRefreshNow = async () => {
         fetchData(true, filterRef.current);
     };
 
 
     const data = appData.donutData;
-    // console.log("donut data", data);
-    // data.map((entry, index) => {
-    //     console.log("server", Object.values(entry));
-    // });
     if(Object.keys(appData.tableData).length > 0){
         const serverName = server != "" ? server : Object.keys(appData.donutData[0])[0];
         const selectedStatus = status != "" ? " with Status: " + status.toUpperCase() : "";
@@ -214,21 +176,6 @@ const DailyHealthcheck = (props) => {
                 
                 <div style={{paddingTop: "30px"}}>
                 <label style={{color: "black", fontWeight: "bold", fontSize: "x-large"}}>BDX Healthcheck Dashboard</label>
-                {/* <div style={{float: "right"}}>
-                    <Countdown
-                        key={currentTime}
-                        date={Date.now() + 60*1000} 
-                        onComplete={() => {
-                            props.tabIndex === 1 && fetchData();
-                        }}
-                        renderer={({ hours, minutes, seconds, completed }) => {
-                            if(Object.keys(appData.tableData).length > 0)
-                                return <span>{minutes}:{seconds}</span>;
-                            else
-                                return <span></span>
-                        }}/>
-                </div>
-                <label style={{float: "right"}}>Page will refresh in </label>  */}
                 </div>
                 
                 <div className="donuts_wrapper">

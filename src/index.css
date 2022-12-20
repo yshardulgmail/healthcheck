@@ -196,7 +196,7 @@ path .recharts-sector:hover {
 }
 
 .table_container {
-  width: 1400px;
+  width: 100%;
   overflow: hidden;
   /* width: 800px; */
 }
