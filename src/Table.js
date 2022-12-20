@@ -285,7 +285,7 @@ const Component = (props) => {
     <tbody>
         {Object.keys(data.nodes).map((item) => (
           <tr key={data.nodes[item].id} item={item}>
-            <td><a href={data.nodes[item].appUrl}>{data.nodes[item].appName}</a></td>
+            <td><a target="_blank" href={data.nodes[item].appUrl}>{data.nodes[item].appName}</a></td>
             <td>{data.nodes[item].appUrl}</td>
             {Object.keys(nodes[Object.keys(nodes)[0]][0]).map(col => {
               if(col.includes(":")){

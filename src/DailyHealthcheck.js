@@ -3,7 +3,7 @@ import { PieChart, Pie, Sector, Cell, ResponsiveContainer, Tooltip, Legend } fro
 import "./index.css";
 import Component from './Table';
 import { right } from '@popperjs/core';
-import fetch from 'node-fetch';
+// import fetch from 'node-fetch';
 import { FaSearch, FaSortAlphaUpAlt } from 'react-icons/fa';
 import { Box, Stack, Input, InputGroup, InputLeftElement } from '@chakra-ui/react';
 
