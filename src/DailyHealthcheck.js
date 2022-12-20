@@ -147,9 +147,18 @@ const DailyHealthcheck = (props) => {
             
     }
     
-      useEffect(() => {
+    useEffect(() => {
         fetchData();
-      }, []); 
+    }, []); 
+
+    useEffect(() => {
+        // clearTimer(getDeadTime());
+        const interval = setInterval(() => {
+          console.log("Interval: ", interval);
+          props.tabIndex === 1 && fetchData();
+        }, 15*60*1000);
+        return () => clearInterval(interval);
+    }, []);
 
     const clicking = (data) => {
         console.log(server)
