@@ -48,7 +48,7 @@ code {
 }
 
 .donut_header {
-  margin-top: 20px;
+  margin-top: 15px;
   text-align: center;
   font-weight: 800;
   font-size: large;
@@ -78,7 +78,8 @@ path .recharts-sector:hover {
 }
 .css-1u2k0bl {
   position: inherit !important;
-  margin: 12px;
+  margin-right: 10px;
+  float: left;
 }
 .css-0{
   margin: auto;
@@ -87,7 +88,8 @@ path .recharts-sector:hover {
 
 .search_input {
   width: 95%;
-  height: 30px;
+  height: 25px;
+  float: left;
 }
 
 .modal {
@@ -153,6 +155,32 @@ path .recharts-sector:hover {
   height: 30px;
 }
 
+.refresh_now {
+  float: left;
+  margin-right: 15px;
+  height: 30px;
+  margin-left: 30px;
+  width: 35%;
+  background-color: #009EDC;
+  color: white;
+  border: 0em;
+}
+
+.refresh_now:disabled,
+.refresh_now[disabled]{
+  border: 1px solid #999999;
+  background-color: #009EDC;
+  color: #666666;
+}
+
+.filter_select {
+  float: left;
+  margin-right: 15px;
+  margin-left: 50px;
+  height: 30px;
+  width: 35%;
+}
+
 .modal-title {
   margin: 0;
 }
@@ -196,7 +224,7 @@ path .recharts-sector:hover {
 }
 
 .table_container {
-  width: 100%;
+  width: 99%;
   overflow: hidden;
   /* width: 800px; */
 }
@@ -245,3 +273,20 @@ path .recharts-sector:hover {
   border-bottom: 2px solid black;
 }
 
+
+@keyframes spinner {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+.loading-spinner {
+  width: 50px;
+  height: 50px;
+  border: 10px solid #f3f3f3; /* Light grey */
+  border-top: 10px solid #009EDC; /* Black */
+  border-radius: 50%;
+  animation: spinner 1.5s linear infinite;
+}

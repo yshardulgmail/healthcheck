@@ -3,9 +3,12 @@ import { PieChart, Pie, Sector, Cell, ResponsiveContainer, Tooltip, Legend } fro
 import "./index.css";
 import Component from './Table';
 import { right } from '@popperjs/core';
+import { usePromiseTracker } from 'react-promise-tracker';
 // import fetch from 'node-fetch';
-import { FaSearch, FaSortAlphaUpAlt } from 'react-icons/fa';
+import {Bars, Circles} from 'react-loader-spinner';
+import { FaSearch } from 'react-icons/fa';
 import { Box, Stack, Input, InputGroup, InputLeftElement } from '@chakra-ui/react';
+// import LoadingSpinner from './Spinner';
 
 
 const COLORS = ['green', 'red'];
@@ -18,8 +21,23 @@ const DailyHealthcheck = (props) => {
     const [timer, setTimer] = useState('1:00');
     const [search, setSearch] = React.useState('');
     const [currentTime, setCurrentTime] = useState(null);
+    const [isLoading, setIsLoading] = useState(false);
     const filterRef = useRef();
 
+    const LoadingIndicator = props => {
+        return (
+          <div
+            style={{
+              width: "100%",
+              height: "100",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center"
+            }}
+          >
+            <Bars color="#009EDC" height="80" width="150" />
+          </div>)
+      };
 
     const handleSearch = (event) => {
         event.preventDefault();
@@ -140,6 +158,7 @@ const DailyHealthcheck = (props) => {
               // console.log(nodes);
             setCurrentTime(Date.now() + 60*1000);
             setAppData({tableData: tableNodes, donutData: finalData});
+            setIsLoading(false) 
         })
         .catch((err) => {
             console.log(err.message);
@@ -171,7 +190,8 @@ const DailyHealthcheck = (props) => {
         fetchData(false, value);
     };
 
-    const handleRefreshNow = async () => {
+    const handleRefreshNow = () => {
+        setIsLoading(true);
         fetchData(true, filterRef.current);
     };
 
@@ -188,14 +208,24 @@ const DailyHealthcheck = (props) => {
                 </div>
                 
                 <div className="donuts_wrapper">
-                    {
+                    {isLoading ? <div
+            style={{
+              width: "100%",
+              height: "100%",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center"
+            }}
+          >
+            <Circles color="#009EDC" height="80" width="150" />
+          </div> : 
                     data.map((entry, index) => (
                         <div className="donut_wrapper">
                             <PieChart width={0.195 * window.innerWidth} height={.35 * window.innerHeight} title={Object.keys(entry)[0].toUpperCase()}>
                                 <Pie 
                                     
                                     data={entry[Object.keys(entry)[0]]}
-                                    cy={150}
+                                    cy={140}
                                     innerRadius={30}
                                     outerRadius={80}
                                     fill="#8884d8"
@@ -217,7 +247,6 @@ const DailyHealthcheck = (props) => {
                 <br />
                 <br />
                 <br />
-                <br />
                 <label style={{color: "black", fontWeight: "bold", fontSize: "large"}}>{serverName} Applications {selectedStatus}</label>
                 <div style={{marginTop: "15px"}}>
                     <Stack spacing={10}>
@@ -228,19 +257,23 @@ const DailyHealthcheck = (props) => {
                             />
                             <Input className="search_input" placeholder="Search Application" value={search} onChange={handleSearch} />
                             <div style={{overflow: "hidden", width: "50%"}}>
-                                <button onClick={() => handleRefreshNow()} className="button modal_send" >
-                                    Refresh Now!!
-                                </button>
-                                <select autocomplete="off" onChange={(evt) => changeFilter(evt.target.value)} className="button modal_send" >
+                                <select autocomplete="off" onChange={(evt) => changeFilter(evt.target.value)} className="button filter_select" >
                                     <option value="3" selected>LAST 3 HOURS</option>
                                     <option value="6" >LAST 6 HOURS</option>
                                     <option value="12" >LAST 12 HOURS</option>
                                 </select>
+                                <button onClick={() => handleRefreshNow()} className="button refresh_now"  disabled={isLoading}>
+                                    Refresh Now!!
+                                </button>
+                                
                             </div>
                         </InputGroup>
                     </Stack>
                     <br />
+                    
+                    {isLoading ? <LoadingIndicator /> : 
                     <Component key={search} server={server} status={status} data={appData.tableData} search={search}/>
+                                    }
                 </div>
         </div>
         );
