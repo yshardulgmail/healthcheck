@@ -185,7 +185,7 @@ const tableData = <table border={1} cellPadding={"5px"}>
 
       <br />
       <div style={{float: "right", marginRight: "40px" }}>
-        <button onClick={() => setShow(true)} >Review</button>
+        <button onClick={() => setShow(true)} className="refresh_now" style={{width: "80px"}}>Review</button>
         <Modal title="My Modal" onClose={() => setShow(false)} show={show}>
           <label style={{fontWeight: "bold"}}>Review Summary: </label>
           <br />
