@@ -47,6 +47,12 @@ code {
   height: 40%; */
 }
 
+.status_select {
+  width: 150px;
+  text-align: center;
+  height: 25px;
+}
+
 .donut_header {
   margin-top: 15px;
   text-align: center;
@@ -137,6 +143,11 @@ path .recharts-sector:hover {
 
 .modal.exit .modal-content {
   transform: translateY(-200px);
+}
+
+.react-time-picker {
+  height: 25px;
+  width: 100px;
 }
 
 .modal-header,

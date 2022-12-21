@@ -5,7 +5,7 @@ import { useTheme } from '@table-library/react-table-library/theme';
 import { DEFAULT_OPTIONS, getTheme } from '@table-library/react-table-library/material-ui';
 import { Box, Stack, Input, InputGroup, InputLeftElement } from '@chakra-ui/react';
 import { FaSearch } from 'react-icons/fa';
-import styles from './index.css'
+import './index.css'
 import Modal from './Modal';
 import TimePicker from 'react-time-picker';
 // import { nodes } from './data';
@@ -137,12 +137,51 @@ const tableData = <table border={1} cellPadding={"5px"}>
                       </tr>
                     )}
                   </table>;
-
+  console.log(data);
   return (
     <div>
-      <Box p={1} borderWidth="1px" borderRadius="lg">
+      {/* <Box p={1} borderWidth="1px" borderRadius="lg">
         <CompactTable columns={COLUMNS} data={data} theme={theme} />
-      </Box>
+      </Box> */}
+      <div className='table_container' style={{paddingTop: "30px"}}>
+        
+      <table class="styled-table" >
+          <thead>
+              <tr>
+                  <th>Sr.No.</th>
+                  <th>Batch Name</th>
+                  <th>SLA/SLO</th>
+                  <th>ETA</th>
+                  <th>Status</th>
+              </tr>
+          </thead>
+          <tbody>
+              {Object.keys(nodes).map((item) => (
+                
+                <tr key={nodes[item].id}>
+                  <td>{nodes[item].srno}</td>
+                  <td>{nodes[item].batch}</td>
+                  <td>{nodes[item].sla_slo}</td>
+                  <td>
+                    <div>
+                      <TimePicker onChange={(value) => onChangeTimer(nodes[item].srno, value)} disableClock={true} clearIcon={null} format={"h:m a"}/>
+                    </div>
+                  </td>
+                  <td>
+                    <select className='status_select' onChange={(evt) => onChangeStatus(nodes[item].srno, evt.target.value)}>
+                      <option>-</option>
+                      <option>Status1</option>
+                      <option>Status2</option>
+                      <option>Status3</option>
+                    </select>
+                  </td>
+                </tr>
+              ))}
+            
+          </tbody>
+      </table>
+        <br />
+      </div>
 
       <br />
       <div style={{float: "right", marginRight: "40px" }}>
