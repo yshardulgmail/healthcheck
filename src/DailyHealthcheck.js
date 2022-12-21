@@ -1,14 +1,10 @@
-import React, { PureComponent, useState, useEffect, useRef } from 'react';
-import { PieChart, Pie, Sector, Cell, ResponsiveContainer, Tooltip, Legend } from 'recharts';
+import React, { useState, useEffect, useRef } from 'react';
+import { PieChart, Pie, Cell, Tooltip } from 'recharts';
 import "./index.css";
 import Component from './Table';
-import { right } from '@popperjs/core';
-import { usePromiseTracker } from 'react-promise-tracker';
-// import fetch from 'node-fetch';
 import {Bars, Circles} from 'react-loader-spinner';
 import { FaSearch } from 'react-icons/fa';
-import { Box, Stack, Input, InputGroup, InputLeftElement } from '@chakra-ui/react';
-// import LoadingSpinner from './Spinner';
+import { Stack, Input, InputGroup, InputLeftElement } from '@chakra-ui/react';
 
 
 const COLORS = ['green', 'red'];
@@ -197,15 +193,16 @@ const DailyHealthcheck = (props) => {
 
 
     const data = appData.donutData;
+    const defaultShow = <div style={{paddingTop: "30px"}}>
+    <label style={{color: "black", fontWeight: "bold", fontSize: "x-large"}}>BDX Healthcheck Dashboard</label>
+    </div>;
     if(Object.keys(appData.tableData).length > 0){
         const serverName = server != "" ? server : Object.keys(appData.donutData[0])[0];
         const selectedStatus = status != "" ? " with Status: " + status.toUpperCase() : "";
         return (
             <div>
                 
-                <div style={{paddingTop: "30px"}}>
-                <label style={{color: "black", fontWeight: "bold", fontSize: "x-large"}}>BDX Healthcheck Dashboard</label>
-                </div>
+                {defaultShow}
                 
                 <div className="donuts_wrapper">
                     {isLoading ? <div
@@ -221,7 +218,7 @@ const DailyHealthcheck = (props) => {
           </div> : 
                     data.map((entry, index) => (
                         <div className="donut_wrapper">
-                            <PieChart width={0.195 * window.innerWidth} height={.35 * window.innerHeight} title={Object.keys(entry)[0].toUpperCase()}>
+                            <PieChart width={0.195 * window.innerWidth} height={.27 * window.innerHeight} title={Object.keys(entry)[0].toUpperCase()}>
                                 <Pie 
                                     
                                     data={entry[Object.keys(entry)[0]]}
@@ -263,7 +260,7 @@ const DailyHealthcheck = (props) => {
                                     <option value="12" >LAST 12 HOURS</option>
                                 </select>
                                 <button onClick={() => handleRefreshNow()} className="button refresh_now"  disabled={isLoading}>
-                                    Refresh Now!!
+                                    REFRESH NOW!!
                                 </button>
                                 
                             </div>
@@ -280,7 +277,9 @@ const DailyHealthcheck = (props) => {
     }
     else {
         return (
-            <div></div>
+            <div>
+                {defaultShow}
+            </div>
         )
     }
 }

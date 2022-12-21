@@ -21,8 +21,19 @@ code {
   background: white; 
 }
 
+.react-tabs__tab:focus:after {
+  content: '';
+  position: absolute;
+  height: 0px;
+  left: -4px;
+  right: -4px;
+  bottom: -5px;
+  background: #fff;
+}
+
 .react-tabs__tab-list {
-  border-bottom: 0px !important;
+  /* border-bottom: 0px !important; */
+  height: 50px;
   background: #009EDC;
 }
 
@@ -48,13 +59,21 @@ code {
 }
 
 .status_select {
-  width: 150px;
+  width: 300px;
   text-align: center;
   height: 25px;
 }
 
+.tabs_container {
+  background: "#009EDC";
+}
+
+.react-time-picker {
+  width: 150px !important;
+}
+
 .donut_header {
-  margin-top: 15px;
+  margin-top: 1px;
   text-align: center;
   font-weight: 800;
   font-size: large;
@@ -190,6 +209,7 @@ path .recharts-sector:hover {
   margin-left: 50px;
   height: 30px;
   width: 35%;
+  text-align: center;
 }
 
 .modal-title {

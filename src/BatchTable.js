@@ -74,11 +74,25 @@ const BatchTable = (props) => {
   };
 
   const onChangeTimer = (srno, data) => {
-    console.log(eta);
+    console.log(data);
     const timeSplit = data.split(":");
     let finalTime = data + " AM";
-    if(Number(timeSplit[0]) > 12) {
-      finalTime = String(Number(timeSplit[0]) - 12) + ":" + timeSplit[1] + " PM";
+    if(Number(timeSplit[0]) === 0) {
+      finalTime = "12:" + timeSplit[1] + " AM";
+    }
+    if(Number(timeSplit[0]) >= 12) {
+      if(Number(timeSplit[0] - 12) < 10) {
+        if(Number(timeSplit[0] - 12) === 0) {
+          finalTime = "12:" + timeSplit[1] + " PM";
+        }
+        else{
+          finalTime = "0" + String(Number(timeSplit[0]) - 12) + ":" + timeSplit[1] + " PM"; 
+        }
+      }
+      else {
+        finalTime = String(Number(timeSplit[0]) - 12) + ":" + timeSplit[1] + " PM";
+      } 
+      
     }
     let tempEta = {...eta};
     tempEta[srno] = finalTime;
@@ -102,22 +116,22 @@ const BatchTable = (props) => {
 //     { label: 'Up Time', renderCell: (item) => item.upTime },
 //     { label: 'Down Time', renderCell: (item) => item.downTime },
 //   ];
-const COLUMNS = [
-  { label: 'Sr. No.', renderCell: (item) => item.srno },
-  { label: 'Batch Name', renderCell: (item) => item.batch },
-  { label: 'SLA/SLO', renderCell: (item) => item.sla_slo },
-  { label: 'ETA', renderCell: (item) => (
-    <div>
-      <TimePicker onChange={(value) => onChangeTimer(item.srno, value)} disableClock={true} format={"h:m a"}/>
-    </div>) },
-  { label: 'Status', renderCell: (item) => (
-    <select onChange={(evt) => onChangeStatus(item.srno, evt.target.value)}>
-      <option>-</option>
-      <option>Status1</option>
-      <option>Status2</option>
-      <option>Status3</option>
-    </select>) },
-];
+// const COLUMNS = [
+//   { label: 'Sr. No.', renderCell: (item) => item.srno },
+//   { label: 'Batch Name', renderCell: (item) => item.batch },
+//   { label: 'SLA/SLO', renderCell: (item) => item.sla_slo },
+//   { label: 'ETA', renderCell: (item) => (
+//     <div>
+//       <TimePicker onChange={(value) => onChangeTimer(item.srno, value)} disableClock={true} format={"h:m a"}/>
+//     </div>) },
+//   { label: 'Status', renderCell: (item) => (
+//     <select onChange={(evt) => onChangeStatus(item.srno, evt.target.value)}>
+//       <option>-</option>
+//       <option>Status1</option>
+//       <option>Status2</option>
+//       <option>Status3</option>
+//     </select>) },
+// ];
 
 const tableData = <table border={1} cellPadding={"5px"}>
                     <tr>
@@ -148,7 +162,7 @@ const tableData = <table border={1} cellPadding={"5px"}>
       <table class="styled-table" >
           <thead>
               <tr>
-                  <th>Sr.No.</th>
+                  <th style={{width: "5px"}}>Sr.No.</th>
                   <th>Batch Name</th>
                   <th>SLA/SLO</th>
                   <th>ETA</th>
@@ -159,20 +173,20 @@ const tableData = <table border={1} cellPadding={"5px"}>
               {Object.keys(nodes).map((item) => (
                 
                 <tr key={nodes[item].id}>
-                  <td>{nodes[item].srno}</td>
+                  <td  style={{width: "5px"}}>{nodes[item].srno}</td>
                   <td>{nodes[item].batch}</td>
                   <td>{nodes[item].sla_slo}</td>
                   <td>
                     <div>
-                      <TimePicker onChange={(value) => onChangeTimer(nodes[item].srno, value)} disableClock={true} clearIcon={null} format={"h:m a"}/>
+                      <TimePicker onChange={(value) => onChangeTimer(nodes[item].srno, value)} disableClock={true} clearIcon={null} format={"hh:mm a"}/>
                     </div>
                   </td>
                   <td>
                     <select className='status_select' onChange={(evt) => onChangeStatus(nodes[item].srno, evt.target.value)}>
-                      <option>-</option>
-                      <option>Status1</option>
-                      <option>Status2</option>
-                      <option>Status3</option>
+                      <option style={{textAlign: "center"}}>-</option>
+                      <option style={{textAlign: "center"}}>Status1</option>
+                      <option style={{textAlign: "center"}}>Status2</option>
+                      <option style={{textAlign: "center"}}>Status3</option>
                     </select>
                   </td>
                 </tr>
@@ -186,7 +200,7 @@ const tableData = <table border={1} cellPadding={"5px"}>
       <br />
       <div style={{float: "right", marginRight: "40px" }}>
         <button onClick={() => setShow(true)} className="refresh_now" style={{width: "80px"}}>Review</button>
-        <Modal title="My Modal" onClose={() => setShow(false)} show={show}>
+        <Modal title="Review" onClose={() => setShow(false)} show={show}>
           <label style={{fontWeight: "bold"}}>Review Summary: </label>
           <br />
           <br />

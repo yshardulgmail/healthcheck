@@ -3,7 +3,7 @@ import 'react-tabs/style/react-tabs.css';
 import { useState, useEffect } from 'react';
 import DailyHealthcheck from './DailyHealthcheck';
 import BatchTable from './BatchTable';
-// import "./index.css"
+import "./index.css"
 
 
 
@@ -11,11 +11,11 @@ const App = () => {
   const [tabIndex, setTabIndex] = useState(1);
 
   return (
-    <div style={{background:"#009EDC"}}>
-      <Tabs selectedIndex={tabIndex} onSelect={(index) => setTabIndex(index)}>
+    <div className='tabs_container'>
+      <Tabs selectedIndex={tabIndex} onSelect={(index) => setTabIndex(index)} focusTabOnClick={false}>
         <TabList>
           <Tab disabled><label style={{color: "white", fontWeight: "bold", fontSize: "x-large"}}>Bank Technology Operations</label></Tab>
-          <Tab>Daily Healthcheck</Tab>
+          <Tab >Daily Healthcheck</Tab>
           <Tab>Batch Notification</Tab>
         </TabList>
         <TabPanel></TabPanel>
