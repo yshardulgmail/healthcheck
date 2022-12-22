@@ -13,8 +13,6 @@ const DailyHealthcheck = (props) => {
     const [server, setServer] = React.useState('');
     const [status, setStatus] = React.useState('');
     const [appData, setAppData] = useState({tableData: {}, donutData: []});
-    // const [filter, setFilter] = useState(3);
-    const [timer, setTimer] = useState('1:00');
     const [search, setSearch] = React.useState('');
     const [currentTime, setCurrentTime] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
