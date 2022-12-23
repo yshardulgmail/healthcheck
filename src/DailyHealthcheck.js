@@ -51,6 +51,32 @@ const DailyHealthcheck = (props) => {
         return time;
     }
 
+    const time_convert = (data) => {
+        //2022-12-22T21:35:16.520Z
+        const timeSplit = data.split("T")[1].split(":").slice(0, 2);
+        console.log(timeSplit);
+        let finalTime = timeSplit.join(":") + " AM";
+        if(Number(timeSplit[0]) === 0) {
+        finalTime = "12:" + timeSplit[1] + " AM";
+        }
+        if(Number(timeSplit[0]) >= 12) {
+            if(Number(timeSplit[0] - 12) < 10) {
+                if(Number(timeSplit[0] - 12) === 0) {
+                finalTime = "12:" + timeSplit[1] + " PM";
+                }
+                else{
+                finalTime = "0" + String(Number(timeSplit[0]) - 12) + ":" + timeSplit[1] + " PM"; 
+                }
+            }
+            else {
+                finalTime = String(Number(timeSplit[0]) - 12) + ":" + timeSplit[1] + " PM";
+            } 
+        
+        }
+
+        return finalTime;
+    };
+
     function fetchData(manual=false, filter=3) {
         fetch('/api/healthcheck/appstatus/'+manual, {
           method: 'GET',
@@ -78,6 +104,8 @@ const DailyHealthcheck = (props) => {
                 processedAppData[appId].push(item);
             });
 
+            console.log(processedAppData);
+
             Object.keys(processedAppData).map(app => {
                 let tempData = [];
                 
@@ -85,7 +113,7 @@ const DailyHealthcheck = (props) => {
                     const tempFilter = manual ? (filter * 2) + 1 : filter * 2;
 
                     tempData = processedAppData[app].slice(-tempFilter);
-                    console.log("length: ", tempData);
+                    // console.log("length: ", tempData);
                 }
                 else{
                     let counter = 1;
@@ -105,14 +133,14 @@ const DailyHealthcheck = (props) => {
                 let server = "";
                 tempData.map(item => {
                     if(node.hasOwnProperty(rowId)) {
-                        node[item.check_time] = item.status;
+                        node[time_convert(item.check_time)] = item.status;
                     }
                     else{
                         node["id"] = rowId;
                         node["appId"] = app;
                         node["appName"] = item.app_name;
                         node["appUrl"] = item.app_url;
-                        node[item.check_time] = item.status;
+                        node[time_convert(item.check_time)] = item.status;
                         node["status"] = item.status;
                         node["server"] = item.server;
                     }

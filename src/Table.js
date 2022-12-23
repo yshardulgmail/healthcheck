@@ -290,6 +290,7 @@ const Component = (props) => {
             {Object.keys(nodes[Object.keys(nodes)[0]][0]).map(col => {
               if(col.includes(":")){
                 // COLUMNS.push({ label: col, renderCell: (item) => item[col].toLowerCase() === "up" ? <img id="running_img" src={green}></img> : <img id="stopped_img" src={red}></img>});
+                console.log("column: ", data.nodes[item][col], data.nodes[item].appName);
                 return <td>{data.nodes[item][col].toLowerCase() === "up" ? <img id="running_img" src={green}></img> : <img id="stopped_img" src={red}></img>}</td>
               }
             })}
