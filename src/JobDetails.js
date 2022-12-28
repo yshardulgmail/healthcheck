@@ -8,6 +8,7 @@ import { FaSearch } from 'react-icons/fa';
 import './index.css'
 import Modal from './Modal';
 import TimePicker from 'react-time-picker';
+// import HCTimePicker from './TimePicker';
 // import { nodes } from './data';
 
 const nodes = [
@@ -15,20 +16,30 @@ const nodes = [
 		id: '0',
 		srno: "1",
 		jobName: "First Job",
-		jobDesc: <table className='modal-table'><tbody>
-			<tr><th>App:</th><td>Facebook</td></tr>
-			<tr><th>Category:</th><td>Don't know</td></tr>
-			<tr><th>Script:</th><td>/some/script/path</td></tr>
-			<tr><th>Command:</th><td>Command -to -run -job</td></tr>
-			<tr><th>File Location:</th><td>The File Location</td></tr>
-			<tr><th>Log Path:</th><td>Log Path</td></tr>
-			<tr><th>Information:</th><td>This is one hell of a job.
-				And this is some long and random description of it.
-				No point in reading further.
-				But I bet you will.</td></tr>
-			<tr><th>Splunk Query:</th><td>Some random query</td></tr>
-			<tr><th>Job Details Link:</th><td><a href="https://www.google.com" target="_blank">First Job</a></td></tr>
-		</tbody></table>,
+		appName: "Facebook",
+		category: "Don't Know",
+		command: "command -to -run -job",
+		fileLoc: "File Location",
+		info: `This is one hell of a job.
+		And this is some long and random description of it.
+		No point in reading further.
+		But I bet you will.`,
+		splunk: "some random query",
+		jobUrl: "https://wwww.facebook.com",
+		// jobDesc: <table className='modal-table'><tbody>
+		// 	<tr><th>App:</th><td>Facebook</td></tr>
+		// 	<tr><th>Category:</th><td>Don't know</td></tr>
+		// 	<tr><th>Script:</th><td>/some/script/path</td></tr>
+		// 	<tr><th>Command:</th><td>Command -to -run -job</td></tr>
+		// 	<tr><th>File Location:</th><td>The File Location</td></tr>
+		// 	<tr><th>Log Path:</th><td>Log Path</td></tr>
+		// 	<tr><th>Information:</th><td>This is one hell of a job.
+		// 		And this is some long and random description of it.
+		// 		No point in reading further.
+		// 		But I bet you will.</td></tr>
+		// 	<tr><th>Splunk Query:</th><td>Some random query</td></tr>
+		// 	<tr><th>Job Details Link:</th><td><a href="https://www.google.com" target="_blank">First Job</a></td></tr>
+		// </tbody></table>,
 		jobBefore: "Third Job",
 		jobAfter: "Second Job",
 		sla: "09:34 PM",
@@ -40,20 +51,30 @@ const nodes = [
 		id: '1',
 		srno: "2",
 		jobName: "Second Job",
-		jobDesc: <table className='modal-table'><tbody>
-			<tr><th>App:</th><td>Facebook</td></tr>
-			<tr><th>Category:</th><td>Don't know</td></tr>
-			<tr><th>Script:</th><td>/some/script/path</td></tr>
-			<tr><th>Command:</th><td>Command -to -run -job</td></tr>
-			<tr><th>File Location:</th><td>The File Location</td></tr>
-			<tr><th>Log Path:</th><td>Log Path</td></tr>
-			<tr><th>Information:</th><td>This is one hell of a job. And yes, you guessed it.
-				This is some long and random description of it.
-				No point in reading further.
-				But I bet you will.</td></tr>
-			<tr><th>Splunk Query:</th><td>Some random query</td></tr>
-			<tr><th>Job Details Link:</th><td><a href="https://www.facebook.com" target="_blank">Second Job</a></td></tr>
-		</tbody></table>,
+		appName: "Google",
+		category: "Don't Know",
+		command: "command -to -run -job",
+		fileLoc: "File Location",
+		info: `This is another one hell of a job.
+		And this is some long and random description of it.
+		No point in reading further.
+		But I bet you will.`,
+		splunk: "some random query",
+		jobUrl: "https://wwww.google.com",
+		// jobDesc: <table className='modal-table'><tbody>
+		// 	<tr><th>App:</th><td>Facebook</td></tr>
+		// 	<tr><th>Category:</th><td>Don't know</td></tr>
+		// 	<tr><th>Script:</th><td>/some/script/path</td></tr>
+		// 	<tr><th>Command:</th><td>Command -to -run -job</td></tr>
+		// 	<tr><th>File Location:</th><td>The File Location</td></tr>
+		// 	<tr><th>Log Path:</th><td>Log Path</td></tr>
+		// 	<tr><th>Information:</th><td>This is one hell of a job. And yes, you guessed it.
+		// 		This is some long and random description of it.
+		// 		No point in reading further.
+		// 		But I bet you will.</td></tr>
+		// 	<tr><th>Splunk Query:</th><td>Some random query</td></tr>
+		// 	<tr><th>Job Details Link:</th><td><a href="https://www.facebook.com" target="_blank">Second Job</a></td></tr>
+		// </tbody></table>,
 		jobBefore: "First Job",
 		jobAfter: "Third Job",
 		sla: "05:34 AM",
@@ -65,17 +86,24 @@ const nodes = [
 		id: '2',
 		srno: "3",
 		jobName: "Third Job",
-		jobDesc: <table className='modal-table'><tbody>
-			<tr><th>App:</th><td>Facebook</td></tr>
-			<tr><th>Category:</th><td>Don't know</td></tr>
-			<tr><th>Script:</th><td>/some/script/path</td></tr>
-			<tr><th>Command:</th><td>Command -to -run -job</td></tr>
-			<tr><th>File Location:</th><td>The File Location</td></tr>
-			<tr><th>Log Path:</th><td>Log Path</td></tr>
-			<tr><th>Information:</th><td>Do I need to say anything??</td></tr>
-			<tr><th>Splunk Query:</th><td>Some random query</td></tr>
-			<tr><th>Job Details Link:</th><td><a href="https://www.facebook.com" target="_blank">Third Job</a></td></tr>
-		</tbody></table>,
+		appName: "Microsoft",
+		category: "Don't Know",
+		command: "command -to -run -job",
+		fileLoc: "File Location",
+		info: `Do I need to say anything??`,
+		splunk: "some random query",
+		jobUrl: "https://wwww.microsoft.com",
+		// jobDesc: <table className='modal-table'><tbody>
+		// 	<tr><th>App:</th><td>Facebook</td></tr>
+		// 	<tr><th>Category:</th><td>Don't know</td></tr>
+		// 	<tr><th>Script:</th><td>/some/script/path</td></tr>
+		// 	<tr><th>Command:</th><td>Command -to -run -job</td></tr>
+		// 	<tr><th>File Location:</th><td>The File Location</td></tr>
+		// 	<tr><th>Log Path:</th><td>Log Path</td></tr>
+		// 	<tr><th>Information:</th><td>Do I need to say anything??</td></tr>
+		// 	<tr><th>Splunk Query:</th><td>Some random query</td></tr>
+		// 	<tr><th>Job Details Link:</th><td><a href="https://www.facebook.com" target="_blank">Third Job</a></td></tr>
+		// </tbody></table>,
 		jobBefore: "Second Job",
 		jobAfter: "First Job",
 		sla: "12:34 PM",
@@ -92,6 +120,7 @@ const JobDetails = (props) => {
 	const [modalData, setModalData] = React.useState(<></>);
 	const [modalButton, setModalButton] = React.useState(<></>);
 	const [search, setSearch] = React.useState('');
+	const timeRef = React.createRef();
 	const [eta, setETA] = React.useState('');
 	const [show, setShow] = React.useState(false);
 	const headerDisplay = show && "display: none"
@@ -153,19 +182,27 @@ const JobDetails = (props) => {
 
 	const saveJobDetails = (e) => {
 		e.preventDefault();
-		console.log(e);
+
+		console.log(e.target.jobName.value);
 	};
 
-	const handleNew = (jobId) => {
+	const handleNew = () => {
 		const editData = <form onSubmit={(e) => saveJobDetails(e)}>
 			<table className='modal-table'>
-				<tr><th>Job Name:</th><td><input type="text" /></td></tr>
-				<tr><th>Predecessor Job Name:</th><td><input type="text" /></td></tr>
-				<tr><th>Successor Job Name:</th><td><input type="text" /></td></tr>
-				<tr><th>SLA:</th><td><input type="text" /></td></tr>
-				<tr><th>Server:</th><td><input type="text" /></td></tr>
-				<tr><th>Log Path:</th><td><input type="text" /></td></tr>
-				<tr><th>Script Path:</th><td><input type="text" /></td></tr>
+				<tr><th>Job Name:</th><td><input type="text" name="jobName" /></td></tr>
+				<tr><th>Predecessor Job Name:</th><td><input type="text" name="jobBefore" /></td></tr>
+				<tr><th>Successor Job Name:</th><td><input type="text" name="jobAfter" /></td></tr>
+				<tr><th>SLA:</th><td><input type="text" name="sla" /></td></tr>
+				<tr><th>Server:</th><td><input type="text" name="server" /></td></tr>
+				<tr><th>Log Path:</th><td><input type="text" name="logPath" /></td></tr>
+				<tr><th>Script Path:</th><td><input type="text" name="scriptPath" /></td></tr>
+				<tr><th>Application Name:</th><td><input type="text" name="appName" /></td></tr>
+				<tr><th>Category:</th><td><input type="text" name="category" /></td></tr>
+				<tr><th>Command:</th><td><input type="text" name="command" /></td></tr>
+				<tr><th>File Location:</th><td><input type="text" name="fileLoc" /></td></tr>
+				<tr><th>Information:</th><td><input type="text" name="info" /></td></tr>
+				<tr><th>Splunk Query:</th><td><input type="text" name="splunk" /></td></tr>
+				<tr><th>Job URL:</th><td><input type="text" name="jobUrl" /></td></tr>
 			</table>
 			<input type="submit" value="Save Job Details" className="refresh_now" style={{ float: "right", width: "150px" }} />
 		</form>
@@ -178,15 +215,25 @@ const JobDetails = (props) => {
 
 	const handleEdit = (jobId) => {
 		const jobDetails = nodes.filter(node => node.id === jobId)[0]
-		const editData = <form onSubmit={(e) => saveJobDetails(e)}>
+		const editData = <form onSubmit={(e) => saveJobDetails(e, jobId)}>
 			<table className='modal-table'>
-				<tr><th>Job Name:</th><td><input type="text" defaultValue={jobDetails.jobName} /></td></tr>
-				<tr><th>Predecessor Job Name:</th><td><input type="text" defaultValue={jobDetails.jobBefore} /></td></tr>
-				<tr><th>Successor Job Name:</th><td><input type="text" defaultValue={jobDetails.jobAfter} /></td></tr>
-				<tr><th>SLA:</th><td><input type="text" defaultValue={jobDetails.sla} /></td></tr>
-				<tr><th>Server:</th><td><input type="text" defaultValue={jobDetails.server} /></td></tr>
-				<tr><th>Log Path:</th><td><input type="text" defaultValue={jobDetails.logPath} /></td></tr>
-				<tr><th>Script Path:</th><td><input type="text" defaultValue={jobDetails.scriptPath} /></td></tr>
+				<tr><th>Job Name:</th><td><input type="text" name="jobName" defaultValue={jobDetails.jobName} /></td></tr>
+				<tr><th>Predecessor Job Name:</th><td><input type="text" name="jobBefore" defaultValue={jobDetails.jobBefore} /></td></tr>
+				<tr><th>Successor Job Name:</th><td><input type="text" name="jobAfter" defaultValue={jobDetails.jobAfter} /></td></tr>
+				{/* <tr><th>SLA:</th><td><div>
+                      <TimePicker onChange={(value) => onChangeTimer(jobDetails.jobId, value)} disableClock={true} clearIcon={null} format={"hh:mm a"}/>
+                    </div></td></tr> */}
+				<tr><th>SLA:</th><td><input type="text" name="sla" defaultValue={jobDetails.sla} /></td></tr>
+				<tr><th>Server:</th><td><input type="text" name="server" defaultValue={jobDetails.server} /></td></tr>
+				<tr><th>Log Path:</th><td><input type="text" name="logPath" defaultValue={jobDetails.logPath} /></td></tr>
+				<tr><th>Script Path:</th><td><input type="text" name="scriptPath" defaultValue={jobDetails.scriptPath} /></td></tr>
+				<tr><th>Application Name:</th><td><input type="text" name="appName" defaultValue={jobDetails.appName} /></td></tr>
+				<tr><th>Category:</th><td><input type="text" name="category" defaultValue={jobDetails.category} /></td></tr>
+				<tr><th>Command:</th><td><input type="text" name="command" defaultValue={jobDetails.command} /></td></tr>
+				<tr><th>File Location:</th><td><input type="text" name="fileLoc" defaultValue={jobDetails.fileLoc} /></td></tr>
+				<tr><th>Information:</th><td><input type="text" name="info" defaultValue={jobDetails.info} /></td></tr>
+				<tr><th>Splunk Query:</th><td><input type="text" name="splunk" defaultValue={jobDetails.splunk} /></td></tr>
+				<tr><th>Job URL:</th><td><input type="text" name="jobUrl" defaultValue={jobDetails.jobUrl} /></td></tr>
 			</table>
 			<input type="submit" value="Save Job Details" className="refresh_now" style={{ float: "right", width: "150px" }} />
 		</form>
@@ -218,7 +265,20 @@ const JobDetails = (props) => {
 	//       <option>Status3</option>
 	//     </select>) },
 	// ];
-	const showJobDetails = (jobDesc) => {
+	const showJobDetails = (jobId) => {
+		const jobDetails = nodes.filter(node => node.id === jobId)[0]
+		const jobDesc = <table className='modal-table'><tbody>
+		 	<tr><th>App:</th><td>{jobDetails.appName}</td></tr>
+		 	<tr><th>Category:</th><td>{jobDetails.category}</td></tr>
+		 	<tr><th>Script:</th><td>{jobDetails.scriptPath}</td></tr>
+		 	<tr><th>Command:</th><td>{jobDetails.command}</td></tr>
+		 	<tr><th>File Location:</th><td>{jobDetails.fileLoc}</td></tr>
+		 	<tr><th>Log Path:</th><td>{jobDetails.logPath}</td></tr>
+		 	<tr><th>Information:</th><td>{jobDetails.info}</td></tr>
+		 	<tr><th>Splunk Query:</th><td>{jobDetails.splunk}</td></tr>
+		 	<tr><th>Job Details Link:</th><td><a href={jobDetails.jobLink} target="_blank">{jobDetails.jobName}</a></td></tr>
+		 </tbody></table>
+
 		setModalButton(<button onClick={() => setShow(false)} className="refresh_now" style={{ float: "right", width: "100px" }}>
 			{"Close"}
 		</button>);
@@ -281,9 +341,10 @@ const JobDetails = (props) => {
 						{data.nodes.map((node) => (
 
 							<tr key={node.id}>
-								<td style={{ width: "10%" }}><a href="javascript:;" onClick={(e) => showJobDetails(node.jobDesc)}>{node.jobName}</a></td>
+								<td style={{ width: "10%" }}><a href="javascript:;" onClick={(e) => showJobDetails(node.id)}>{node.jobName}</a></td>
 								<td style={{ width: "10%", textAlign: "center" }}>{node.jobBefore}</td>
 								<td style={{ width: "10%" }}>{node.jobAfter}</td>
+								{/* <td><HCTimePicker dataId={node.id} ref={timeRef} onTimeChange={(newTime) => console.log(newTime)}/></td> */}
 								<td>{node.sla}</td>
 								<td>{node.server}</td>
 								<td style={{ width: "20%" }}>{node.logPath}</td>
