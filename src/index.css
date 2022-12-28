@@ -212,6 +212,10 @@ path .recharts-sector:hover {
   text-align: center;
 }
 
+.modal-table {
+  text-align: left;
+}
+
 .modal-title {
   margin: 0;
 }

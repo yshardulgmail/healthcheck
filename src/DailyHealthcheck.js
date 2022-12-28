@@ -117,7 +117,7 @@ const DailyHealthcheck = (props) => {
                 }
                 else{
                     let counter = 1;
-                    processedAppData[app].map(item =>{
+                    processedAppData[app].map(item => {
                         if(item.check_time.includes(":45") && counter <= 12) {
                             tempData.push(item);
                             counter++;
@@ -152,8 +152,8 @@ const DailyHealthcheck = (props) => {
                 }
                 tableNodes[server].push(node);
 
-                if(!donutData.hasOwnProperty(server)) {
-                    console.log("inside");
+                if(server !== "" && !donutData.hasOwnProperty(server)) {
+                    console.log("inside: ", server);
                     donutData[server] = {"UP": [], "DOWN": []}
                 }
                 donutData[server][node["status"]].push(node);
@@ -197,7 +197,7 @@ const DailyHealthcheck = (props) => {
         const interval = setInterval(() => {
           console.log("Interval: ", interval);
           props.tabIndex === 1 && fetchData();
-        }, 15*60*1000);
+        }, 60*1000);
         return () => clearInterval(interval);
     }, []);
 

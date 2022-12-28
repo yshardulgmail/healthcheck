@@ -31,9 +31,9 @@ const Modal = props => {
           </div>
           <div className="modal-body">{props.children}</div>
           <div className="modal-footer">
-            <button onClick={props.onClose} className="refresh_now" style={{float: "right", width: "100px"}}>
-              Send Mail
-            </button>
+            {props.button ? props.button : <button onClick={props.onClose} className="refresh_now" style={{float: "right", width: "100px"}}>
+               Send Mail
+            </button>}
           </div>
         </div>
         {/* </div> */}
