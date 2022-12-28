@@ -156,6 +156,26 @@ const JobDetails = (props) => {
 		console.log(e);
 	};
 
+	const handleNew = (jobId) => {
+		const editData = <form onSubmit={(e) => saveJobDetails(e)}>
+			<table className='modal-table'>
+				<tr><th>Job Name:</th><td><input type="text" /></td></tr>
+				<tr><th>Predecessor Job Name:</th><td><input type="text" /></td></tr>
+				<tr><th>Successor Job Name:</th><td><input type="text" /></td></tr>
+				<tr><th>SLA:</th><td><input type="text" /></td></tr>
+				<tr><th>Server:</th><td><input type="text" /></td></tr>
+				<tr><th>Log Path:</th><td><input type="text" /></td></tr>
+				<tr><th>Script Path:</th><td><input type="text" /></td></tr>
+			</table>
+			<input type="submit" value="Save Job Details" className="refresh_now" style={{ float: "right", width: "150px" }} />
+		</form>
+		setModalData(editData);
+		setModalButton(<button onClick={() => setShow(false)} className="refresh_now" style={{ float: "right", width: "100px" }}>
+			{"Close"}
+		</button>);
+		setShow(true);
+	};
+
 	const handleEdit = (jobId) => {
 		const jobDetails = nodes.filter(node => node.id === jobId)[0]
 		const editData = <form onSubmit={(e) => saveJobDetails(e)}>
@@ -275,6 +295,9 @@ const JobDetails = (props) => {
 					</tbody>
 				</table>
 				<br />
+				<button onClick={() => handleNew()} className="refresh_now" style={{ float: "right", width: "100px" }}>
+			Add new Job
+		</button>
 			</div>
 
 			<br />
