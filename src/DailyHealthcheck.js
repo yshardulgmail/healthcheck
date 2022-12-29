@@ -2,7 +2,8 @@ import React, { useState, useEffect, useRef } from 'react';
 import { PieChart, Pie, Cell, Tooltip } from 'recharts';
 import "./index.css";
 import Component from './Table';
-import {Bars, Circles} from 'react-loader-spinner';
+// import {Bars, Circles} from 'react-loader-spinner';
+import { LoadingIndicatorBars, LoadingIndicatorCircles } from './LoadingIndicator';
 import { FaSearch } from 'react-icons/fa';
 import { Stack, Input, InputGroup, InputLeftElement } from '@chakra-ui/react';
 
@@ -18,20 +19,20 @@ const DailyHealthcheck = (props) => {
     const [isLoading, setIsLoading] = useState(false);
     const filterRef = useRef();
 
-    const LoadingIndicator = props => {
-        return (
-          <div
-            style={{
-              width: "100%",
-              height: "100",
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center"
-            }}
-          >
-            <Bars color="#009EDC" height="80" width="150" />
-          </div>)
-      };
+    // const LoadingIndicator = props => {
+    //     return (
+    //       <div
+    //         style={{
+    //           width: "100%",
+    //           height: "100",
+    //           display: "flex",
+    //           justifyContent: "center",
+    //           alignItems: "center"
+    //         }}
+    //       >
+    //         <Bars color="#009EDC" height="80" width="150" />
+    //       </div>)
+    //   };
 
     const handleSearch = (event) => {
         event.preventDefault();
@@ -90,7 +91,7 @@ const DailyHealthcheck = (props) => {
         .then((response) => response.json())
         .then((data) => {
             // console.log(data);
-            console.log("filter: ",filter)
+            
             const tableNodes = {};
             const donutData = {};
             let rowId = 0;
@@ -111,7 +112,7 @@ const DailyHealthcheck = (props) => {
                 
                 if(filter != 12){
                     const tempFilter = manual ? (filter * 2) + 1 : filter * 2;
-
+                    console.log("filter: ",tempFilter);
                     tempData = processedAppData[app].slice(-tempFilter);
                     // console.log("length: ", tempData);
                 }
@@ -180,7 +181,7 @@ const DailyHealthcheck = (props) => {
               // console.log(nodes);
             setCurrentTime(Date.now() + 60*1000);
             setAppData({tableData: tableNodes, donutData: finalData});
-            setIsLoading(false) 
+            setIsLoading(false);
         })
         .catch((err) => {
             console.log(err.message);
@@ -231,17 +232,7 @@ const DailyHealthcheck = (props) => {
                 {defaultShow}
                 
                 <div className="donuts_wrapper">
-                    {isLoading ? <div
-            style={{
-              width: "100%",
-              height: "100%",
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center"
-            }}
-          >
-            <Circles color="#009EDC" height="80" width="150" />
-          </div> : 
+                    {isLoading ? <LoadingIndicatorCircles /> : 
                     data.map((entry, index) => (
                         <div className="donut_wrapper">
                             <PieChart width={0.195 * window.innerWidth} height={.27 * window.innerHeight} title={Object.keys(entry)[0].toUpperCase()}>
@@ -294,7 +285,7 @@ const DailyHealthcheck = (props) => {
                     </Stack>
                     <br />
                     
-                    {isLoading ? <LoadingIndicator /> : 
+                    {isLoading ? <LoadingIndicatorBars /> : 
                     <Component key={search} server={server} status={status} data={appData.tableData} search={search}/>
                                     }
                 </div>
@@ -305,6 +296,37 @@ const DailyHealthcheck = (props) => {
         return (
             <div>
                 {defaultShow}
+                <div className="donuts_wrapper">
+                    <LoadingIndicatorCircles />
+            </div>
+                <br />
+                <br />
+                <br />
+                <div style={{marginTop: "15px"}}>
+                    <Stack spacing={10}>
+                        <InputGroup>
+                            <InputLeftElement
+                            pointerEvents="none"
+                            children={<FaSearch style={{ color: '#4a5568' }} />}
+                            />
+                            <Input className="search_input" placeholder="Search Application" value={search} onChange={handleSearch} />
+                            <div style={{overflow: "hidden", width: "50%"}}>
+                                <select autocomplete="off" onChange={(evt) => changeFilter(evt.target.value)} className="button filter_select" >
+                                    <option value="3" selected>LAST 3 HOURS</option>
+                                    <option value="6" >LAST 6 HOURS</option>
+                                    <option value="12" >LAST 12 HOURS</option>
+                                </select>
+                                <button onClick={() => handleRefreshNow()} className="button refresh_now"  disabled={isLoading}>
+                                    REFRESH NOW!!
+                                </button>
+                                
+                            </div>
+                        </InputGroup>
+                    </Stack>
+                    <br />
+                    
+                    <LoadingIndicatorBars /> 
+                </div>
             </div>
         )
     }

@@ -2,9 +2,33 @@ use healthcheck;
 
 CREATE TABLE applications (
     app_id int PRIMARY KEY,
-    app_name nvarchar(50) NOT NULL,  
-    app_url nvarchar(50) NOT NULL, 
+    app_name nvarchar(100) NOT NULL,  
+    app_url nvarchar(200) NOT NULL, 
     server nvarchar(50)
+);
+
+CREATE TABLE jobs (
+    id int NOT NULL IDENTITY(1,1) PRIMARY KEY,
+    job_name nvarchar(100) NOT NULL,  
+    job_url nvarchar(200) NOT NULL, 
+    job_before nvarchar(100),
+    job_after nvarchar(100),
+    sla nvarchar(10),
+    server nvarchar(20),
+    log_path nvarchar(300),
+    script_path nvarchar(300),
+    app_name nvarchar(100),
+    category nvarchar(100),
+    command nvarchar(100),
+    file_location nvarchar(100),
+    info nvarchar(500),
+    splunk nvarchar(500)
+);
+
+CREATE TABLE batch_notifications (
+    id int NOT NULL IDENTITY(1,1) PRIMARY KEY,
+    batch nvarchar(200) NOT NULL,  
+    sla_slo nvarchar(200) NOT NULL
 );
 
 CREATE TABLE app_status (
@@ -65,3 +89,11 @@ insert into app_status values(9, '5:30PM', 'DOWN');
 insert into app_status values(10, '4:30PM', 'UP');
 insert into app_status values(10, '5:00PM', 'UP');
 insert into app_status values(10, '5:30PM', 'UP');
+
+insert into jobs values('Job 1', 'https://www.facebook.com', 'Job 3', 'Job 2', '09:15 PM', 'BQSA', '/some/path/job1.log', '/some/path/job1.sh', 'Facebook', 'Don''t Know', 'command -to -run -job1', '/some/file/location1', 'This is one hell of a job. And this is some long and random description of it. No point in reading further. But I bet you will.', 'select query from splunk');
+insert into jobs values('Job 2', 'https://www.google.com', 'Job 1', 'Job 3', '12:15 AM', 'CDMA', '/some/path/job2.log', '/some/path/job2.sh', 'Google', 'Don''t Care', 'command -to -run -job2', '/some/file/location2', 'This is another one hell of a job. And this is some long and random description of it. No point in reading further. But I bet you will.', 'select query from splunk2');
+insert into jobs values('Job 3', 'https://www.microsoft.com', 'Job 2', 'Job 1', '10:15 AM', 'CQS', '/some/path/job3.log', '/some/path/job3.sh', 'Microsoft', 'Racist', 'command -to -run -job3', '/some/file/location3', 'Do I need to say more??', 'select query from splunk3');
+
+insert into batch_notifications values('Batch 1', '12:04 PM');
+insert into batch_notifications values ('Batch 2', '03:43 AM');
+insert into batch_notifications values('Batch 3', '08:12 PM');

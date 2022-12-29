@@ -25,9 +25,9 @@ const Modal = props => {
     >
       <div className="modal" onClick={props.onClose}>
       {/* <div class="modal-dialog" style={{overflowY: "scroll"}} >  */}
-        <div className="modal-content" onClick={e => e.stopPropagation()}>
+        <div className="modal-content" onClick={e => e.stopPropagation()} style={props.style}>
           <div className="modal-header">
-            <h4 className="modal-title">{props.title}</h4>
+            <h2 className="modal-title">{props.title}</h2>
           </div>
           <div className="modal-body">{props.children}</div>
           <div className="modal-footer">
