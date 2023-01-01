@@ -174,8 +174,9 @@ path .recharts-sector:hover {
   padding-left: 20px;
   align-self: center;
   overflow: hidden;
-  padding-top: 20px;
-  padding-bottom: 20px;
+  height: 25px;
+  padding-top: 10px;
+  padding-bottom: 10px;
 }
 
 .modal_send {
@@ -324,4 +325,28 @@ path .recharts-sector:hover {
   border-top: 10px solid #009EDC; /* Black */
   border-radius: 50%;
   animation: spinner 1.5s linear infinite;
+}
+
+.login_table {
+  text-align: left;
+  padding: 10px;
+  border-spacing: 20px 5px;
+  width: 100%;
+}
+
+.login_table th,
+.login_table td {
+    padding: 7px 5%;
+    /* text-align: center; */
+}
+
+.login_labels {
+  font-size: larger;
+  font-weight: 600;
+}
+
+.login_texts {
+  font-size: larger;
+  font-weight: 400;
+  width: 100%;
 }

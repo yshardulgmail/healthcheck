@@ -25,6 +25,26 @@ CREATE TABLE jobs (
     splunk nvarchar(500)
 );
 
+CREATE TABLE jobs_log (
+    id int NOT NULL,
+    job_name nvarchar(100) NOT NULL,  
+    job_url nvarchar(200) NOT NULL, 
+    job_before nvarchar(100),
+    job_after nvarchar(100),
+    sla nvarchar(10),
+    server nvarchar(20),
+    log_path nvarchar(300),
+    script_path nvarchar(300),
+    app_name nvarchar(100),
+    category nvarchar(100),
+    command nvarchar(100),
+    file_location nvarchar(100),
+    info nvarchar(500),
+    splunk nvarchar(500),
+    edited_by nvarchar(100),
+    action nvarchar(50)
+);
+
 CREATE TABLE batch_notifications (
     id int NOT NULL IDENTITY(1,1) PRIMARY KEY,
     batch nvarchar(200) NOT NULL,  

@@ -22,20 +22,6 @@ const nodes = [
 		But I bet you will.`,
 		splunk: "some random query",
 		job_url: "https://wwww.facebook.com",
-		// jobDesc: <table className='modal-table'><tbody>
-		// 	<tr><th>App:</th><td>Facebook</td></tr>
-		// 	<tr><th>Category:</th><td>Don't know</td></tr>
-		// 	<tr><th>Script:</th><td>/some/script/path</td></tr>
-		// 	<tr><th>Command:</th><td>Command -to -run -job</td></tr>
-		// 	<tr><th>File Location:</th><td>The File Location</td></tr>
-		// 	<tr><th>Log Path:</th><td>Log Path</td></tr>
-		// 	<tr><th>Information:</th><td>This is one hell of a job.
-		// 		And this is some long and random description of it.
-		// 		No point in reading further.
-		// 		But I bet you will.</td></tr>
-		// 	<tr><th>Splunk Query:</th><td>Some random query</td></tr>
-		// 	<tr><th>Job Details Link:</th><td><a href="https://www.google.com" target="_blank">First Job</a></td></tr>
-		// </tbody></table>,
 		job_before: "Third Job",
 		job_after: "Second Job",
 		sla: "09:34 PM",
@@ -56,20 +42,6 @@ const nodes = [
 		But I bet you will.`,
 		splunk: "some random query",
 		job_url: "https://wwww.google.com",
-		// jobDesc: <table className='modal-table'><tbody>
-		// 	<tr><th>App:</th><td>Facebook</td></tr>
-		// 	<tr><th>Category:</th><td>Don't know</td></tr>
-		// 	<tr><th>Script:</th><td>/some/script/path</td></tr>
-		// 	<tr><th>Command:</th><td>Command -to -run -job</td></tr>
-		// 	<tr><th>File Location:</th><td>The File Location</td></tr>
-		// 	<tr><th>Log Path:</th><td>Log Path</td></tr>
-		// 	<tr><th>Information:</th><td>This is one hell of a job. And yes, you guessed it.
-		// 		This is some long and random description of it.
-		// 		No point in reading further.
-		// 		But I bet you will.</td></tr>
-		// 	<tr><th>Splunk Query:</th><td>Some random query</td></tr>
-		// 	<tr><th>Job Details Link:</th><td><a href="https://www.facebook.com" target="_blank">Second Job</a></td></tr>
-		// </tbody></table>,
 		job_before: "First Job",
 		job_after: "Third Job",
 		sla: "05:34 AM",
@@ -87,17 +59,6 @@ const nodes = [
 		info: `Do I need to say anything??`,
 		splunk: "some random query",
 		job_url: "https://wwww.microsoft.com",
-		// jobDesc: <table className='modal-table'><tbody>
-		// 	<tr><th>App:</th><td>Facebook</td></tr>
-		// 	<tr><th>Category:</th><td>Don't know</td></tr>
-		// 	<tr><th>Script:</th><td>/some/script/path</td></tr>
-		// 	<tr><th>Command:</th><td>Command -to -run -job</td></tr>
-		// 	<tr><th>File Location:</th><td>The File Location</td></tr>
-		// 	<tr><th>Log Path:</th><td>Log Path</td></tr>
-		// 	<tr><th>Information:</th><td>Do I need to say anything??</td></tr>
-		// 	<tr><th>Splunk Query:</th><td>Some random query</td></tr>
-		// 	<tr><th>Job Details Link:</th><td><a href="https://www.facebook.com" target="_blank">Third Job</a></td></tr>
-		// </tbody></table>,
 		job_before: "Second Job",
 		job_after: "First Job",
 		sla: "12:34 PM",
@@ -112,6 +73,7 @@ const nodes = [
 const JobDetails = (props) => {
 	const [modalData, setModalData] = useState(<></>);
 	const [modalButton, setModalButton] = useState(<></>);
+	const [modalStyle, setModalStyle] = useState({});
 	const [search, setSearch] = useState('');
 	const [eta, setETA] = useState('');
 	const [show, setShow] = useState(false);
@@ -173,27 +135,35 @@ const JobDetails = (props) => {
 	const saveJobDetails = (e, jobId="new", delJob=false) => {
 		e.preventDefault();
 		console.log(jobId);
-		const saveJobData = {};
+		let saveJobData = {};
 		let method = "POST";
 		let url = '/api/healthcheck/jobs';
 		
 		console.log(saveJobData);
 		if(delJob) {
 			method = "DELETE";
-			saveJobData["id"] = jobId;
+			saveJobData = jobsData.filter(node => node.id === jobId)[0];
+			saveJobData["action"] = "DELETE";
+			saveJobData["edited_by"] = props.loggedInUser;
 			url += "/" + jobId;
 		}
 		else {
 			if(jobId !== "new") {
 				method = "PUT";
 				saveJobData["id"] = jobId;
+				saveJobData["action"] = "UPDATE";
 				url += "/" + jobId;
+			}
+			else {
+				saveJobData["action"] = "INSERT";
 			}
 			Object.keys(jobsData[0]).map(field => {
 				if(!["id"].includes(field)) {
 					saveJobData[field] = e.target[field].value;
 				}
 			});	
+			
+			saveJobData["edited_by"] = props.loggedInUser;
 		}
 		
 		fetch(url, {
@@ -217,9 +187,26 @@ const JobDetails = (props) => {
 		});
 	};
 
-	const handleDelete = (e, jobId) => {
-		setIsLoading(true);
+	const deleteJob = (e, jobId) => {
+		console.log("Logged in user", props.loggedInUser)
 		saveJobDetails(e, jobId, true);
+		setShow(false);
+	};
+
+	const handleDelete = (e, jobId, jobName) => {
+		setModalData(<h5>Are you sure you want to delete "{jobName}"?</h5>);
+		setModalButton(<div style={{ width: "100%" }}>
+			<button onClick={(e) => deleteJob(e, jobId)} 
+				className="refresh_now" 
+				style={{ float: "inherit", width: "100px", marginRight: "20px" }}>
+				{"Yes"}
+			</button>
+			<button onClick={() => setShow(false)} className="refresh_now" style={{ float: "inherit", width: "100px" }}>
+				{"No"}
+			</button>
+		</div>);
+		setModalStyle({height: "35%", width: "40%"})
+		setShow(true);
 	};
 
 	const handleNew = () => {
@@ -297,7 +284,7 @@ const JobDetails = (props) => {
 			<tr><th>Log Path:</th><td>{jobDetails.log_path}</td></tr>
 			<tr><th>Information:</th><td>{jobDetails.info}</td></tr>
 			<tr><th>Splunk Query:</th><td>{jobDetails.splunk}</td></tr>
-			<tr><th>Job Details Link:</th><td><a href={jobDetails.jobLink} target="_blank">{jobDetails.job_name}</a></td></tr>
+			<tr><th>Job Details Link:</th><td><a href={jobDetails.job_url} target="_blank">{jobDetails.job_name}</a></td></tr>
 		</tbody></table>
 
 		setModalButton(<button onClick={() => setShow(false)} className="refresh_now" style={{ float: "right", width: "100px" }}>
@@ -361,7 +348,7 @@ const JobDetails = (props) => {
 											style={{ width: "50px", float: "left", marginLeft: "0px" }}>
 											Edit
 										</button>
-										<button onClick={(e) => handleDelete(e, node.id)}
+										<button onClick={(e) => handleDelete(e, node.id, node.job_name)}
 											className="refresh_now"
 											style={{ width: "50px", float: "left", marginLeft: "0px", marginRight: "0px" }}
 											disabled={isLoading}>
@@ -380,7 +367,8 @@ const JobDetails = (props) => {
 
 			<br />
 			<div style={{ float: "right", marginRight: "40px" }}>
-				<Modal title="Job Details" onClose={() => setShow(false)} show={show} button={modalButton}>
+				<Modal title="Job Details" onClose={() => setShow(false)} 
+					show={show} button={modalButton} style={modalStyle}>
 					<br />
 
 					{modalData}
