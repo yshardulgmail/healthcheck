@@ -74,12 +74,13 @@ const JobDetails = (props) => {
 	const [modalData, setModalData] = useState(<></>);
 	const [modalButton, setModalButton] = useState(<></>);
 	const [modalStyle, setModalStyle] = useState({});
+	const [modalTitle, setModalTitle] = useState("Job Details");
 	const [search, setSearch] = useState('');
 	const [eta, setETA] = useState('');
 	const [show, setShow] = useState(false);
 	const [jobsData, setJobsData] = useState([]);
 	const [isLoading, setIsLoading] = useState(true);
-	
+
 	const handleSearch = (event) => {
 		event.preventDefault();
 		setSearch(event.target.value);
@@ -112,35 +113,44 @@ const JobDetails = (props) => {
 	}
 
 	function fetchJobs() {
-        fetch('/api/healthcheck/jobs', {
-          method: 'GET',
-          mode: 'no-cors'
-        })
-        .then((response) => response.json())
-        .then((jobs) => {
-			setJobsData(jobs);
-            setIsLoading(false) 
-        })
-        .catch((err) => {
-            console.log(err.message);
-        });       
-    }
-    
-    useEffect(() => {
-        fetchJobs();
-    }, []); 
+		fetch('/api/healthcheck/jobs', {
+			method: 'GET',
+			mode: 'no-cors'
+		})
+			.then((response) => {
+				if (!response.ok) {
+					return response.json().then(data => { throw Error(data.message) });
+				}
+				return response.json();
+			})
+			.then((jobs) => {
+				setJobsData(jobs);
+				setIsLoading(false)
+			})
+			.catch((err) => {
+				setModalData(<h4 style={{ color: "red" }}>{err.message}</h4>);
+				setModalStyle({ height: "25%", width: "40%" });
+				setModalTitle("Message");
+				setShow(true);
+				console.log(err.message);
+			});
+	}
+
+	useEffect(() => {
+		fetchJobs();
+	}, []);
 
 	const data = jobsData.filter((item) => item.job_name.toLowerCase().startsWith(search.toLowerCase()));
 
-	const saveJobDetails = (e, jobId="new", delJob=false) => {
+	const saveJobDetails = (e, jobId = "new", delJob = false) => {
 		e.preventDefault();
 		console.log(jobId);
 		let saveJobData = {};
 		let method = "POST";
 		let url = '/api/healthcheck/jobs';
-		
+
 		console.log(saveJobData);
-		if(delJob) {
+		if (delJob) {
 			method = "DELETE";
 			saveJobData = jobsData.filter(node => node.id === jobId)[0];
 			saveJobData["action"] = "DELETE";
@@ -148,7 +158,7 @@ const JobDetails = (props) => {
 			url += "/" + jobId;
 		}
 		else {
-			if(jobId !== "new") {
+			if (jobId !== "new") {
 				method = "PUT";
 				saveJobData["id"] = jobId;
 				saveJobData["action"] = "UPDATE";
@@ -158,33 +168,38 @@ const JobDetails = (props) => {
 				saveJobData["action"] = "INSERT";
 			}
 			Object.keys(jobsData[0]).map(field => {
-				if(!["id"].includes(field)) {
+				if (!["id"].includes(field)) {
 					saveJobData[field] = e.target[field].value;
 				}
-			});	
-			
+			});
+
 			saveJobData["edited_by"] = props.loggedInUser;
 		}
-		
+
 		fetch(url, {
 			method,
 			headers: { 'Content-Type': 'application/json' },
-        	body: JSON.stringify(saveJobData)
+			body: JSON.stringify(saveJobData)
 		})
-		.then((response) => {
-			if(!response.ok) {
-				throw Error("Error in updating!!")
-			}
-			return response.text();
-		})
-		.then((text) => {
-			fetchJobs();
-			setShow(false);
-			setIsLoading(false);
-		})
-		.catch((err) => {
-			alert(err.message);
-		});
+			.then((response) => {
+				if (!response.ok) {
+					return response.json().then(data => { throw Error(data.message) });
+				}
+				return response.json();
+			})
+			.then((text) => {
+				fetchJobs();
+				setShow(false);
+				setIsLoading(false);
+			})
+			.catch((err) => {
+				setShow(false);
+				setModalData(<h4 style={{ color: "red" }}>{err.message}</h4>);
+				setModalStyle({ height: "25%", width: "40%" });
+				setModalTitle("Message");
+				setShow(true);
+				console.log(err.message);
+			});
 	};
 
 	const deleteJob = (e, jobId) => {
@@ -196,8 +211,8 @@ const JobDetails = (props) => {
 	const handleDelete = (e, jobId, jobName) => {
 		setModalData(<h5>Are you sure you want to delete "{jobName}"?</h5>);
 		setModalButton(<div style={{ width: "100%" }}>
-			<button onClick={(e) => deleteJob(e, jobId)} 
-				className="refresh_now" 
+			<button onClick={(e) => deleteJob(e, jobId)}
+				className="refresh_now"
 				style={{ float: "inherit", width: "100px", marginRight: "20px" }}>
 				{"Yes"}
 			</button>
@@ -205,7 +220,7 @@ const JobDetails = (props) => {
 				{"No"}
 			</button>
 		</div>);
-		setModalStyle({height: "35%", width: "40%"})
+		setModalStyle({ height: "35%", width: "40%" })
 		setShow(true);
 	};
 
@@ -227,15 +242,15 @@ const JobDetails = (props) => {
 				<tr><th>Splunk Query:</th><td><textarea type="text" name="splunk" /></td></tr>
 				<tr><th>Job URL:</th><td><input type="text" name="job_url" /></td></tr>
 			</table>
-			<input type="submit" value="Save Job Details" 
-				className="refresh_now" 
+			<input type="submit" value="Save Job Details"
+				className="refresh_now"
 				style={{ float: "left", width: "150px", marginTop: "15px", marginLeft: "5px" }} />
 		</form>
 		setModalData(editData);
 		setModalButton(<button onClick={() => setShow(false)} className="refresh_now" style={{ float: "right", width: "100px" }}>
 			{"Close"}
 		</button>);
-		setModalStyle({width: "45%"})
+		setModalStyle({ width: "45%" })
 		setShow(true);
 	};
 
@@ -267,15 +282,15 @@ const JobDetails = (props) => {
 				<tr><th>Splunk Query:</th><td><textarea type="text" name="splunk" defaultValue={jobDetails.splunk} /></td></tr>
 				<tr><th>Job URL:</th><td><input type="text" name="job_url" defaultValue={jobDetails.job_url} /></td></tr>
 			</table>
-			<input type="submit" value="Save Job Details" 
-				className="refresh_now" 
+			<input type="submit" value="Save Job Details"
+				className="refresh_now"
 				style={{ float: "left", width: "150px", marginTop: "15px", marginLeft: "5px" }} />
 		</form>
 		setModalData(editData);
 		setModalButton(<button onClick={() => setShow(false)} className="refresh_now" style={{ float: "right", width: "100px" }}>
 			{"Close"}
 		</button>);
-		setModalStyle({width: "45%"})
+		setModalStyle({ width: "45%" })
 		setShow(true);
 	};
 
@@ -313,7 +328,8 @@ const JobDetails = (props) => {
 					<div style={{ overflow: "hidden", width: "11%" }}>
 						<button onClick={() => handleNew()}
 							className="refresh_now"
-							style={{ float: "right", width: "100px" }}>
+							style={{ float: "right", width: "100px" }}
+							disabled={isLoading}>
 							Add new Job
 						</button>
 					</div>
@@ -335,35 +351,35 @@ const JobDetails = (props) => {
 						</tr>
 					</thead>
 					<tbody>
-						{data.length === 0 
-						? <tr><td colSpan={8}><LoadingIndicatorBars /></td></tr>
-						: data.map((node) => (
-							<tr key={node.id}>
-								<td style={{ width: "10%" }}><a href="javascript:;" onClick={(e) => showJobDetails(node.id)}>{node.job_name}</a></td>
-								<td style={{ width: "10%", textAlign: "center" }}>{node.job_before}</td>
-								<td style={{ width: "10%" }}>{node.job_after}</td>
-								{/* <td><HCTimePicker dataId={node.id} ref={timeRef} onTimeChange={(newTime) => console.log(newTime)}/></td> */}
-								<td>{node.sla}</td>
-								<td>{node.server}</td>
-								<td style={{ width: "20%" }}>{node.log_path}</td>
-								<td style={{ width: "20%" }}>{node.script_path}</td>
-								<th style={{ width: "10%" }}>
-									<div style={{ overflow: "hidden", display: "inline-flex" }}>
-										<button onClick={() => handleEdit(node.id)}
-											className="refresh_now"
-											style={{ width: "50px", float: "left", marginLeft: "0px" }}>
-											Edit
-										</button>
-										<button onClick={(e) => handleDelete(e, node.id, node.job_name)}
-											className="refresh_now"
-											style={{ width: "50px", float: "left", marginLeft: "0px", marginRight: "0px" }}
-											disabled={isLoading}>
-											Delete
-										</button>
-									</div>
-								</th>
-							</tr>
-						))}
+						{data.length === 0
+							? <tr><td colSpan={8}><LoadingIndicatorBars /></td></tr>
+							: data.map((node) => (
+								<tr key={node.id}>
+									<td style={{ width: "10%" }}><a href="javascript:;" onClick={(e) => showJobDetails(node.id)}>{node.job_name}</a></td>
+									<td style={{ width: "10%", textAlign: "center" }}>{node.job_before}</td>
+									<td style={{ width: "10%" }}>{node.job_after}</td>
+									{/* <td><HCTimePicker dataId={node.id} ref={timeRef} onTimeChange={(newTime) => console.log(newTime)}/></td> */}
+									<td>{node.sla}</td>
+									<td>{node.server}</td>
+									<td style={{ width: "20%" }}>{node.log_path}</td>
+									<td style={{ width: "20%" }}>{node.script_path}</td>
+									<th style={{ width: "10%" }}>
+										<div style={{ overflow: "hidden", display: "inline-flex" }}>
+											<button onClick={() => handleEdit(node.id)}
+												className="refresh_now"
+												style={{ width: "50px", float: "left", marginLeft: "0px" }}>
+												Edit
+											</button>
+											<button onClick={(e) => handleDelete(e, node.id, node.job_name)}
+												className="refresh_now"
+												style={{ width: "50px", float: "left", marginLeft: "0px", marginRight: "0px" }}
+												disabled={isLoading}>
+												Delete
+											</button>
+										</div>
+									</th>
+								</tr>
+							))}
 
 					</tbody>
 				</table>
@@ -373,13 +389,9 @@ const JobDetails = (props) => {
 
 			<br />
 			<div style={{ float: "right", marginRight: "40px" }}>
-				<Modal title="Job Details" onClose={() => setShow(false)} 
+				<Modal title={modalTitle} onClose={() => setShow(false)}
 					show={show} button={modalButton} style={modalStyle}>
-					<br />
-
 					{modalData}
-					<br />
-					<br />
 				</Modal>
 			</div>
 		</div>

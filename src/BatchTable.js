@@ -43,7 +43,10 @@ const BatchTable = (props) => {
   const recipients = React.useRef(null);
   const [modalData, setModalData] = useState(<></>);
   const [modalButton, setModalButton] = useState(<></>);
-
+  const [modalTitle, setModalTitle] = useState("");
+  const [modalStyle, setModalStyle] = useState({});
+  const [isLoading, setIsLoading] = useState(true);
+  const mailHtml = [];
 
   const handleSearch = (event) => {
     event.preventDefault();
@@ -55,11 +58,21 @@ const BatchTable = (props) => {
       method: 'GET',
       mode: 'no-cors'
     })
-      .then((response) => response.json())
+      .then((response) => {
+        if (!response.ok) {
+          return response.json().then(data => { throw Error(data.message) });
+        }
+        return response.json();
+      })
       .then((jobs) => {
         setJobsData(jobs);
+        setIsLoading(false);
       })
       .catch((err) => {
+        setModalData(<h4 style={{ color: "red" }}>{err.message}</h4>);
+        setModalStyle({ height: "25%", width: "40%" });
+        setModalTitle("Message");
+        setShow(true);
         console.log(err.message);
       });
   }
@@ -107,46 +120,62 @@ const BatchTable = (props) => {
   // };
 
   console.log(data);
+  const handleReview = () => {
 
-  let mailHtml = [];
-  const tableData = <div className='table_container' style={{ paddingTop: "30px" }}>
-    <table class="styled-table" >
-      <thead>
-        <tr>
-          <th style={{ width: "5%" }}>Sr.No.</th>
-          <th style={{ width: "25%" }}>Batch Name</th>
-          <th>SLA/SLO</th>
-          <th>ETA</th>
-          <th>Status</th>
-        </tr>
-      </thead>
-      <tbody>
-        {nodes.map(node => {
-          let tempHtml = "<tr>";
-          tempHtml = tempHtml.concat("<td style='width:5%'>", node.id, "</td>")
-            .concat("<td style='width:30%'>", node.batch, "</td>")
-            .concat("<td>", node.sla_slo, "</td>")
-            .concat("<td>", eta[node.id], "</td>")
-            .concat("<td>", status[node.id], "</td>")
-            .concat("</tr>");
-          mailHtml.push(tempHtml);
-          return <tr>
-            <td style={{ width: "5%" }}>{node.id}</td>
-            <td style={{ width: "25%" }}>{node.batch}</td>
-            <td>{node.sla_slo}</td>
-            <td>{eta[node.id]}</td>
-            <td>{status[node.id]}</td>
+    const tableData = <div className='table_container' style={{ paddingTop: "30px" }}>
+      <table class="styled-table" >
+        <thead>
+          <tr>
+            <th style={{ width: "5%" }}>Sr.No.</th>
+            <th style={{ width: "25%" }}>Batch Name</th>
+            <th>SLA/SLO</th>
+            <th>ETA</th>
+            <th>Status</th>
           </tr>
-        })}
-      </tbody>
-    </table></div>;
+        </thead>
+        <tbody>
+          {nodes.map(node => {
+            let tempHtml = "<tr>";
+            tempHtml = tempHtml.concat("<td style='width:5%'>", node.id, "</td>")
+              .concat("<td style='width:30%'>", node.batch, "</td>")
+              .concat("<td>", node.sla_slo, "</td>")
+              .concat("<td>", eta[node.id] ? eta[node.id] : "Not Provided", "</td>")
+              .concat("<td>", status[node.id] ? status[node.id] : "Not Provided", "</td>")
+              .concat("</tr>");
+            mailHtml.push(tempHtml);
+            return <tr>
+              <td style={{ width: "5%" }}>{node.id}</td>
+              <td style={{ width: "25%" }}>{node.batch}</td>
+              <td>{node.sla_slo}</td>
+              <td>{eta[node.id]}</td>
+              <td>{status[node.id]}</td>
+            </tr>
+          })}
+        </tbody>
+      </table>
+      <br />
+      <br />
+      <div style={{ display: "inline-block", width: "100%" }}>
+        <label style={{ fontWeight: "bold" }}>Recipients: </label>
+        <input style={{ marginLeft: "15px", width: "75%" }} type="text" ref={recipients}></input>
+      </div>
+    </div>;
+
+    setModalData(tableData);
+    setModalButton(<button onClick={() => sendMail()} className="refresh_now" style={{ float: "right", width: "100px" }}>
+      Send Mail
+    </button>);
+    setModalStyle({ width: "80%" });
+    setModalTitle("Review Summary");
+    setShow(true);
+  }
   const sendMail = () => {
     console.log(recipients.current.value);
     fetch("/api/healthcheck/sendMail", {
       method: "POST",
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ 
-        html: mailHtml.join(""), 
+      body: JSON.stringify({
+        html: mailHtml.join(""),
         to: recipients.current.value,
       }),
     })
@@ -157,6 +186,7 @@ const BatchTable = (props) => {
         return response.text();
       })
       .then((text) => {
+        setShow(false);
       })
       .catch((err) => {
         alert(err.message);
@@ -210,23 +240,16 @@ const BatchTable = (props) => {
 
       <br />
       <div style={{ float: "right", marginRight: "40px" }}>
-        <button onClick={() => setShow(true)} className="refresh_now" style={{ width: "80px" }}>Review</button>
+        <button onClick={() => handleReview()} className="refresh_now" style={{ width: "80px" }} disabled={isLoading}>Review</button>
         <Modal
-          title="Review Summary"
+          title={modalTitle}
           onClose={() => setShow(false)}
           show={show}
-          button={<button onClick={() => sendMail()} className="refresh_now" style={{ float: "right", width: "100px" }}>
-            Send Mail
-          </button>}
-          style={{ width: "80%"}}
+          button={modalButton}
+          style={modalStyle}
         >
-          {tableData}
-          <br />
-          <br />
-          <div style={{ display: "inline-block", width: "100%" }}>
-            <label style={{ fontWeight: "bold" }}>Recipients: </label>
-            <input style={{ marginLeft: "15px", width: "75%" }} type="text" ref={recipients}></input>
-          </div>
+          {modalData}
+
         </Modal>
       </div>
     </div>

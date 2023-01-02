@@ -6,6 +6,7 @@ import Component from './Table';
 import { LoadingIndicatorBars, LoadingIndicatorCircles } from './LoadingIndicator';
 import { FaSearch } from 'react-icons/fa';
 import { Stack, Input, InputGroup, InputLeftElement } from '@chakra-ui/react';
+import Modal from './Modal';
 
 
 const COLORS = ['green', 'red'];
@@ -16,8 +17,13 @@ const DailyHealthcheck = (props) => {
     const [appData, setAppData] = useState({tableData: {}, donutData: []});
     const [search, setSearch] = React.useState('');
     const [currentTime, setCurrentTime] = useState(null);
-    const [isLoading, setIsLoading] = useState(false);
+    const [isLoading, setIsLoading] = useState(true);
     const filterRef = useRef();
+    const [modalData, setModalData] = useState(<></>);
+	const [modalButton, setModalButton] = useState(<></>);
+	const [modalStyle, setModalStyle] = useState({});
+    const [show, setShow] = useState(false);
+	
 
     // const LoadingIndicator = props => {
     //     return (
@@ -88,7 +94,12 @@ const DailyHealthcheck = (props) => {
           //     'Access-Control-Allow-Headers': 'Origin, X-Requested-With, Content-Type, Accept'
           // }
         })
-        .then((response) => response.json())
+        .then((response) => {
+            if(!response.ok) {
+                return response.json().then(data => { throw Error(data.message)});
+            }
+            return response.json();
+        })
         .then((data) => {
             // console.log(data);
             
@@ -184,6 +195,9 @@ const DailyHealthcheck = (props) => {
             setIsLoading(false);
         })
         .catch((err) => {
+            setModalData(<h4 style={{color: "red"}}>{err.message}</h4>);
+            setModalStyle({height: "25%", width: "40%"});
+            setShow(true);
             console.log(err.message);
         });
             
@@ -271,7 +285,10 @@ const DailyHealthcheck = (props) => {
                             />
                             <Input className="search_input" placeholder="Search Application" value={search} onChange={handleSearch} />
                             <div style={{overflow: "hidden", width: "50%"}}>
-                                <select autocomplete="off" onChange={(evt) => changeFilter(evt.target.value)} className="button filter_select" >
+                                <select autocomplete="off" 
+                                    onChange={(evt) => changeFilter(evt.target.value)} 
+                                    className="button filter_select" 
+                                    disabled={isLoading}>
                                     <option value="3" selected>LAST 3 HOURS</option>
                                     <option value="6" >LAST 6 HOURS</option>
                                     <option value="12" >LAST 12 HOURS</option>
@@ -311,12 +328,14 @@ const DailyHealthcheck = (props) => {
                             />
                             <Input className="search_input" placeholder="Search Application" value={search} onChange={handleSearch} />
                             <div style={{overflow: "hidden", width: "50%"}}>
-                                <select autocomplete="off" onChange={(evt) => changeFilter(evt.target.value)} className="button filter_select" >
+                                <select autocomplete="off" 
+                                    className="button filter_select" 
+                                    disabled={isLoading}>
                                     <option value="3" selected>LAST 3 HOURS</option>
                                     <option value="6" >LAST 6 HOURS</option>
                                     <option value="12" >LAST 12 HOURS</option>
                                 </select>
-                                <button onClick={() => handleRefreshNow()} className="button refresh_now"  disabled={isLoading}>
+                                <button className="button refresh_now"  disabled={isLoading}>
                                     REFRESH NOW!!
                                 </button>
                                 
@@ -326,6 +345,11 @@ const DailyHealthcheck = (props) => {
                     <br />
                     
                     <LoadingIndicatorBars /> 
+                    <Modal title="Message" 
+                        onClose={() => setShow(false)}
+                        show={show} button={modalButton} style={modalStyle}>
+                        {modalData}
+                    </Modal>
                 </div>
             </div>
         )
