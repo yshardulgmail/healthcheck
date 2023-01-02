@@ -224,15 +224,18 @@ const JobDetails = (props) => {
 				<tr><th>Command:</th><td><input type="text" name="command" /></td></tr>
 				<tr><th>File Location:</th><td><input type="text" name="file_location" /></td></tr>
 				<tr><th>Information:</th><td><textarea name="info" /></td></tr>
-				<tr><th>Splunk Query:</th><td><input type="text" name="splunk" /></td></tr>
+				<tr><th>Splunk Query:</th><td><textarea type="text" name="splunk" /></td></tr>
 				<tr><th>Job URL:</th><td><input type="text" name="job_url" /></td></tr>
 			</table>
-			<input type="submit" value="Save Job Details" className="refresh_now" style={{ float: "right", width: "150px" }} />
+			<input type="submit" value="Save Job Details" 
+				className="refresh_now" 
+				style={{ float: "left", width: "150px", marginTop: "15px", marginLeft: "5px" }} />
 		</form>
 		setModalData(editData);
 		setModalButton(<button onClick={() => setShow(false)} className="refresh_now" style={{ float: "right", width: "100px" }}>
 			{"Close"}
 		</button>);
+		setModalStyle({width: "45%"})
 		setShow(true);
 	};
 
@@ -261,15 +264,18 @@ const JobDetails = (props) => {
 				<tr><th>Command:</th><td><input type="text" name="command" defaultValue={jobDetails.command} /></td></tr>
 				<tr><th>File Location:</th><td><input type="text" name="file_location" defaultValue={jobDetails.file_location} /></td></tr>
 				<tr><th>Information:</th><td><textarea name="info" defaultValue={jobDetails.info} /></td></tr>
-				<tr><th>Splunk Query:</th><td><input type="text" name="splunk" defaultValue={jobDetails.splunk} /></td></tr>
+				<tr><th>Splunk Query:</th><td><textarea type="text" name="splunk" defaultValue={jobDetails.splunk} /></td></tr>
 				<tr><th>Job URL:</th><td><input type="text" name="job_url" defaultValue={jobDetails.job_url} /></td></tr>
 			</table>
-			<input type="submit" value="Save Job Details" className="refresh_now" style={{ float: "right", width: "150px" }} />
+			<input type="submit" value="Save Job Details" 
+				className="refresh_now" 
+				style={{ float: "left", width: "150px", marginTop: "15px", marginLeft: "5px" }} />
 		</form>
 		setModalData(editData);
 		setModalButton(<button onClick={() => setShow(false)} className="refresh_now" style={{ float: "right", width: "100px" }}>
 			{"Close"}
 		</button>);
+		setModalStyle({width: "45%"})
 		setShow(true);
 	};
 

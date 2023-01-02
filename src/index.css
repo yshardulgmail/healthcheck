@@ -217,6 +217,18 @@ path .recharts-sector:hover {
   text-align: left;
 }
 
+.modal-table th {
+  width: 30%;
+}
+
+.modal-table td input {
+  width: 80%;
+}
+
+.modal-table td textarea {
+  width: 80%;
+}
+
 .modal-title {
   margin: 0;
 }
