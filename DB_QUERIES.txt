@@ -25,7 +25,7 @@ CREATE TABLE jobs (
     splunk nvarchar(500)
 );
 
-CREATE TABLE jobs_log (
+CREATE TABLE jobs_logs (
     id int NOT NULL,
     job_name nvarchar(100) NOT NULL,  
     job_url nvarchar(200) NOT NULL, 

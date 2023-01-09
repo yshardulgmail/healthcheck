@@ -40,8 +40,29 @@ code {
 .react-tabs__tab--selected {
   border-color: #009EDC !important;
 }
+
+.react-tabs__tab-list li:last-child {
+  width: 35%;
+  text-align: right;
+}
+
+.react-tabs__tab-list li:last-child {
+  width: 35%;
+  text-align: right;
+}
+
+.react-tabs__tab-list_logeed_out li:last-child {
+  width: 58%;
+  text-align: right;
+}
+
+.react-tabs__tab-list li:first-child {
+  width: 25%;
+}
+
 .react-tabs__tab,
 .react-tabs__tab--selected {
+  width:10%;
   background: #009EDC !important;
   color: white !important;
 }

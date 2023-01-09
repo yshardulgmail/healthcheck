@@ -204,14 +204,14 @@ const DailyHealthcheck = (props) => {
     }
     
     useEffect(() => {
-        props.loggedIn && fetchData();
-    }, [props.loggedIn]); 
+        fetchData();
+    }, []); 
 
     useEffect(() => {
         // clearTimer(getDeadTime());
         const interval = setInterval(() => {
           console.log("Interval: ", interval);
-          props.loggedIn && props.tabIndex === 1 && fetchData();
+          props.tabIndex === 1 && fetchData();
         }, 60*1000);
         return () => clearInterval(interval);
     }, []);
